@@ -7,6 +7,7 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
 
     public event System.Action<Vector2> OnMoveEvent;
     public event System.Action<bool> OnJumpEvent;
+    public event System.Action<Vector2> OnLookEvent;
 
     void Awake()
     {
@@ -16,13 +17,30 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
 
     void OnEnable()
     {
+        if (input == null)
+        {
+            input = new InputSystem_Actions();
+            input.Player.SetCallbacks(this);
+        }
+
         input.Enable();
     }
 
     void OnDisable()
     {
-        input.Disable();
-        input.Dispose();
+        // When Unity is exiting play mode or object is being destroyed,
+        // input might already be null or invalid.
+        if (input != null)
+            input.Disable();
+    }
+
+    void OnDestroy()
+    {
+        if (input != null)
+        {
+            input.Dispose();
+            input = null;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -38,22 +56,13 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        //throw new System.NotImplementedException();
-    }
+        if (context.started || context.performed)
+        {
+            OnLookEvent?.Invoke(context.ReadValue<Vector2>());
+            return;
+        }
 
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-        //throw new System.NotImplementedException();
+        OnLookEvent?.Invoke(Vector2.zero);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -61,18 +70,11 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
         OnJumpEvent?.Invoke(context.ReadValueAsButton());
     }
 
-    public void OnPrevious(InputAction.CallbackContext context)
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnNext(InputAction.CallbackContext context)
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnSprint(InputAction.CallbackContext context)
-    {
-        //throw new System.NotImplementedException();
-    }
+    // Unused actions (leave empty)
+    public void OnAttack(InputAction.CallbackContext context) { }
+    public void OnInteract(InputAction.CallbackContext context) { }
+    public void OnCrouch(InputAction.CallbackContext context) { }
+    public void OnPrevious(InputAction.CallbackContext context) { }
+    public void OnNext(InputAction.CallbackContext context) { }
+    public void OnSprint(InputAction.CallbackContext context) { }
 }
