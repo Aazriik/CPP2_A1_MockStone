@@ -8,6 +8,7 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
     public event System.Action<Vector2> OnMoveEvent;
     public event System.Action<bool> OnJumpEvent;
     public event System.Action<Vector2> OnLookEvent;
+    public event System.Action<bool> OnCrouchEvent;
 
     void Awake()
     {
@@ -70,10 +71,17 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
         OnJumpEvent?.Invoke(context.ReadValueAsButton());
     }
 
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (context.started || context.performed)
+            OnCrouchEvent?.Invoke(true);
+        else if (context.canceled)
+            OnCrouchEvent?.Invoke(false);
+    }
+
     // Unused actions (leave empty)
     public void OnAttack(InputAction.CallbackContext context) { }
     public void OnInteract(InputAction.CallbackContext context) { }
-    public void OnCrouch(InputAction.CallbackContext context) { }
     public void OnPrevious(InputAction.CallbackContext context) { }
     public void OnNext(InputAction.CallbackContext context) { }
     public void OnSprint(InputAction.CallbackContext context) { }
