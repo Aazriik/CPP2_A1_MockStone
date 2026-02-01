@@ -18,6 +18,16 @@ public class PlayerController : MonoBehaviour
 
     private LayerMask stairsLayer;
 
+    [Header("Crouch Settings")]
+    [SerializeField] private float standingHeight = 2f;
+    [SerializeField] private float crouchHeight = 1.2f;
+    [SerializeField] private float crouchSpeedMultiplier = 0.5f;
+    [SerializeField] private float cameraStandY = 0.9f;
+    [SerializeField] private float cameraCrouchY = 0.5f;
+
+    private bool isCrouching = false;
+    private bool crouchHeld = false;
+
     // --- LOOK ADDED (minimal) ---
     [Header("Look Settings")]
     [SerializeField] private Transform cameraTransform;
@@ -34,6 +44,7 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnJumpEvent += OnJump;
 
         InputManager.Instance.OnLookEvent += OnLook;
+        InputManager.Instance.OnCrouchEvent += OnCrouch;
     }
     void OnDisable()
     {
@@ -41,11 +52,13 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnJumpEvent -= OnJump;
 
         InputManager.Instance.OnLookEvent -= OnLook;
+        InputManager.Instance.OnCrouchEvent -= OnCrouch;
     }
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
     void OnLook(Vector2 input) => lookInput = input;
+    void OnCrouch(bool pressed) => crouchHeld = pressed;
     #endregion
 
     void Start()
@@ -88,6 +101,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateLook();
+        UpdateCrouch();
 
         Ray newRay = new Ray(transform.position, transform.forward);
         RaycastHit hitInfo;
@@ -117,8 +131,9 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDir = yawRotation * inputDir;
 
-        velocity.x = moveDir.x * 5f;
-        velocity.z = moveDir.z * 5f;
+        float speed = isCrouching ? 5f * crouchSpeedMultiplier : 5f;
+        velocity.x = moveDir.x * speed;
+        velocity.z = moveDir.z * speed;
 
         // Jump / gravity 
         if (cc.isGrounded)
@@ -131,18 +146,33 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y += gravity * Time.fixedDeltaTime;
         }
+    }
 
-        if (cc.isGrounded)
+    void UpdateCrouch()
+    {
+        if (cc == null) return;
+
+        bool shouldCrouch = crouchHeld;
+        if (shouldCrouch == isCrouching) return;
+
+        // Keep the bottom of the CharacterController in the same world position
+        float bottomBefore = transform.position.y + cc.center.y - (cc.height * 0.5f);
+
+        isCrouching = shouldCrouch;
+        float targetHeight = isCrouching ? crouchHeight : standingHeight;
+
+        cc.height = targetHeight;
+        cc.center = new Vector3(0f, targetHeight * 0.5f, 0f);
+
+        float bottomAfter = transform.position.y + cc.center.y - (cc.height * 0.5f);
+        float delta = bottomBefore - bottomAfter;
+        transform.position += new Vector3(0f, delta, 0f);
+
+        if (cameraTransform != null)
         {
-            velocity.y = -cc.skinWidth;
-            if (jumpPressed)
-            {
-                velocity.y = initalJumpVelocity;
-            }
-        }
-        else
-        {
-            velocity.y += gravity * Time.fixedDeltaTime;
+            float targetCamY = isCrouching ? cameraCrouchY : cameraStandY;
+            Vector3 p = cameraTransform.localPosition;
+            cameraTransform.localPosition = new Vector3(p.x, targetCamY, p.z);
         }
     }
 
