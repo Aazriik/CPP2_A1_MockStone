@@ -3590,6 +3590,78 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1001 &1165933711
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 362.1782
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.000015258789
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 341.1739
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.023532582
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99972314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 182.697
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242730848645889333, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8483905245480408435, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      propertyPath: m_Name
+      value: Gundam
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8483905245480408435, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1366929819}
+  m_SourcePrefab: {fileID: 100100000, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
 --- !u!1 &1185407600
 GameObject:
   m_ObjectHideFlags: 0
@@ -5012,6 +5084,26 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1366929815 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8483905245480408435, guid: 6b08abde4c85e2142aa080cd0650c391, type: 3}
+  m_PrefabInstance: {fileID: 1165933711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1366929819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366929815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e796a452e6bd148983ac4e60beb6a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GundamEnemyScript
+  speed: 5
+  distance: 20
+  direction: {x: 1, y: 0, z: 1}
 --- !u!1 &1496667706
 GameObject:
   m_ObjectHideFlags: 0
@@ -6453,3 +6545,4 @@ SceneRoots:
   - {fileID: 358676443}
   - {fileID: 1496667712}
   - {fileID: 1326738008}
+  - {fileID: 1165933711}
