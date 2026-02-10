@@ -1,9 +1,9 @@
 using UnityEngine;
 
-[DefaultExecutionOrder(-100)]
-public class Singleton<T> : MonoBehaviour where T : Component
+public class Singleton<T>: MonoBehaviour where T : Component
 {
     protected static T _instance;
+
     public static T Instance
     {
         get
@@ -13,10 +13,11 @@ public class Singleton<T> : MonoBehaviour where T : Component
                 _instance = FindFirstObjectByType<T>();
                 if (_instance == null)
                 {
-                    GameObject singletonObject = new GameObject();
-                    _instance = singletonObject.AddComponent<T>();
-                    singletonObject.name = typeof(T).ToString() + " (Singleton)";
-                    DontDestroyOnLoad(singletonObject);
+                    //GameObject singletonObject = new GameObject();
+                    //_instance = singletonObject.AddComponent<T>();
+                    //singletonObject.name = typeof(T).ToString() + " (Singleton)";
+                    //DontDestroyOnLoad(singletonObject);
+                    throw new System.Exception($"An instance of {typeof(T)} is needed in the scene, but there is none.");
                 }
             }
             return _instance;
@@ -25,16 +26,13 @@ public class Singleton<T> : MonoBehaviour where T : Component
 
     private void Awake()
     {
-        if (_instance == null)
+        if (_instance != null || _instance != this)
         {
-            _instance = this as T;
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);
             return;
         }
 
-        if (_instance != this)
-        {
-            Destroy(gameObject);
-        }
+        _instance = this as T;
+        DontDestroyOnLoad(gameObject);
     }
 }

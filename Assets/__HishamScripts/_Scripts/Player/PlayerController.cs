@@ -1,13 +1,20 @@
-// Mockstone Player Controller
-using UnityEngine;
+// Hisham
+/*using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEditor;
 using System;
 using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
-{
+{ 
     CharacterController cc;
+    Collider col;
+    Animator anim;
+    Camera mainCamera;
+    WeaponBase curWeapon = null;
+    IInteract interactableObject = null;
+
+    public GameObject interactImage;
 
     [Header("Jump Settiings")]
     [SerializeField] private float jumpHeight = 2f;
@@ -15,39 +22,6 @@ public class PlayerController : MonoBehaviour
 
     private float gravity;
     private float initalJumpVelocity;
-
-    private Vector2 moveInput = Vector2.zero;
-    private Vector3 velocity = Vector3.zero;
-    private bool jumpPressed = false;
-
-    private LayerMask stairsLayer;
-
-    [Header("Crouch Settings")]
-    [SerializeField] private float standingHeight = 2f;
-    [SerializeField] private float crouchHeight = 1.2f;
-    [SerializeField] private float crouchSpeedMultiplier = 0.5f;
-    [SerializeField] private float cameraStandY = 0.9f;
-    [SerializeField] private float cameraCrouchY = 0.5f;
-
-    private bool isCrouching = false;
-    private bool crouchHeld = false;
-
-    // --- LOOK ADDED (minimal) ---
-    [Header("Look Settings")]
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private float lookSensitivity = 2f;
-
-    private Vector2 lookInput = Vector2.zero;
-    private float xRotation = 0f;
-    // ---------------------------
-
-    //Hisham Variables
-    Collider col;
-    //Animator anim;
-    //Camera mainCamera;
-    WeaponBase curWeapon = null;
-    IInteract interactableObject = null;
-    public GameObject interactImage;
 
     [Header("Movement Settings")]
     [SerializeField] private float initSpeed = 0.5f;
@@ -58,7 +32,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform weaponAttachPoint;
     public Transform WeaponAttachPoint => weaponAttachPoint;
     public Collider Collider => col;
+
+    private Vector2 moveInput = Vector2.zero;
+    private Vector3 velocity = Vector3.zero;
     private float currentSpeed = 0.0f;
+    private bool jumpPressed = false;
+
+    private LayerMask stairsLayer;
 
     #region Input Handling
     void OnEnable()
@@ -81,8 +61,7 @@ public class PlayerController : MonoBehaviour
         if (interactableObject != null && pressed)
         {
             WeaponBase weapon = interactableObject as WeaponBase;
-            if (curWeapon != null && weapon != null)
-                return;
+            if (curWeapon != null && weapon != null) return;
 
             if (weapon != null && curWeapon == null)
                 curWeapon = weapon;
@@ -100,21 +79,20 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    // Start is called before the first frame update
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        col = GetComponent<Collider>();
+        anim = GetComponentInChildren<Animator>();
+
         CalculateJumpVariables();
 
         stairsLayer = LayerMask.GetMask("Stairs");
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        // Hisham
-        col = GetComponent<Collider>();
+        mainCamera = Camera.main;
     }
 
+    //this triggers when a value is changed in the inspector
     void OnValidate()
     {
         CalculateJumpVariables();
@@ -136,16 +114,14 @@ public class PlayerController : MonoBehaviour
             timeToJumpApex = 0.4f;
             jumpHeight = 2f;
         }
-
+        
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         initalJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        UpdateLook();
-        UpdateCrouch();
+        CheckInteractionUI();
 
         Ray newRay = new Ray(transform.position, transform.forward);
         RaycastHit hitInfo;
@@ -158,86 +134,73 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void CheckInteractionUI()
     {
-        UpdateCharacterVelocity();
-        cc.Move(velocity * Time.fixedDeltaTime);
+        if (interactableObject != null && interactImage.activeSelf == false)
+            interactImage.SetActive(true);
+        else if (interactableObject == null && interactImage.activeSelf == true)
+            interactImage.SetActive(false);
     }
 
-    void UpdateCharacterVelocity()
+    // Update is called once per frame
+    void FixedUpdate()
     {
-        // Camera-relative movement using camera YAW only (best practice)
-        float yaw = (cameraTransform != null) ? cameraTransform.eulerAngles.y : transform.eulerAngles.y;
-        Quaternion yawRotation = Quaternion.Euler(0f, yaw, 0f);
+        Vector3 projectedMoveDirection = ProjectedMoveDirection();
+        UpdateCharacterVelocity(projectedMoveDirection);
+        UpdateCharacterRotation(projectedMoveDirection);
+        
+        cc.Move(velocity * Time.fixedDeltaTime);
+        anim.SetFloat("speed", currentSpeed / maxSpeed);
+    }
 
-        Vector3 inputDir = new Vector3(moveInput.x, 0f, moveInput.y);
-        if (inputDir.sqrMagnitude > 1f) inputDir.Normalize(); // no faster diagonals
+    #region Movement Helpers
+    private Vector3 ProjectedMoveDirection()
+    {
+        Vector3 cameraFwd = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
 
-        Vector3 moveDir = yawRotation * inputDir;
+        cameraFwd.y = 0;
+        cameraRight.y = 0;
 
-        float speed = isCrouching ? 5f * crouchSpeedMultiplier : 5f;
-        velocity.x = moveDir.x * speed;
-        velocity.z = moveDir.z * speed;
+        cameraFwd.Normalize();
+        cameraRight.Normalize();
 
-        // Jump / gravity 
+        return cameraFwd * moveInput.y + cameraRight * moveInput.x;
+    }
+
+    void UpdateCharacterVelocity(Vector3 projectedMoveDirection)
+    {
+        if (moveInput == Vector2.zero) currentSpeed = 0f;
+        else if (currentSpeed == 0.0f) currentSpeed = initSpeed;
+        else currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
+
+
+        velocity.x = projectedMoveDirection.x * currentSpeed;
+        velocity.z = projectedMoveDirection.z * currentSpeed;
+
         if (cc.isGrounded)
         {
             velocity.y = -cc.skinWidth;
             if (jumpPressed)
+            {
                 velocity.y = initalJumpVelocity;
+            }
         }
         else
         {
             velocity.y += gravity * Time.fixedDeltaTime;
         }
     }
-
-    #region Character Crouch and Look
-    void UpdateCrouch()
+    private void UpdateCharacterRotation(Vector3 projectedMoveDirection)
     {
-        if (cc == null) return;
-
-        bool shouldCrouch = crouchHeld;
-        if (shouldCrouch == isCrouching) return;
-
-        // Keep the bottom of the CharacterController in the same world position
-        float bottomBefore = transform.position.y + cc.center.y - (cc.height * 0.5f);
-
-        isCrouching = shouldCrouch;
-        float targetHeight = isCrouching ? crouchHeight : standingHeight;
-
-        cc.height = targetHeight;
-        cc.center = new Vector3(0f, targetHeight * 0.5f, 0f);
-
-        float bottomAfter = transform.position.y + cc.center.y - (cc.height * 0.5f);
-        float delta = bottomBefore - bottomAfter;
-        transform.position += new Vector3(0f, delta, 0f);
-
-        if (cameraTransform != null)
+        if (moveInput != Vector2.zero)
         {
-            float targetCamY = isCrouching ? cameraCrouchY : cameraStandY;
-            Vector3 p = cameraTransform.localPosition;
-            cameraTransform.localPosition = new Vector3(p.x, targetCamY, p.z);
+            Quaternion targetRotation = Quaternion.LookRotation(projectedMoveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.2f);
         }
-    }
-
-    void UpdateLook()
-    {
-        // Horizontal look (rotate player body)
-        float mouseX = lookInput.x * lookSensitivity;
-        transform.Rotate(Vector3.up * mouseX);
-
-        // Vertical look (rotate camera up/down)
-        float mouseY = lookInput.y * lookSensitivity;
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-
-        if (cameraTransform != null)
-            cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
     #endregion
 
-    // Hisham Interact System
     private void OnTriggerEnter(Collider collision)
     {
         IInteract interactable = collision.GetComponent<IInteract>();
@@ -255,4 +218,10 @@ public class PlayerController : MonoBehaviour
             interactableObject = null;
         }
     }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        
+    }
 }
+*/
