@@ -1,44 +1,44 @@
-// Mockstone Player Controller
-using UnityEngine;
+// Hisham
+/*using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEditor;
 using System;
 using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
-{
-    CharacterController cc;
-    Collider col;
-    //Animator anim;
-    Camera mainCamera;
-    WeaponBase curWeapon = null;
-    IInteract interactableObject = null;
+{ 
+    `CharacterController cc;
+    `Collider col;
+    `Animator anim;
+    `Camera mainCamera;
+    `WeaponBase curWeapon = null;
+    `IInteract interactableObject = null;
 
-    public GameObject interactImage;
+    `public GameObject interactImage;
 
     [Header("Jump Settiings")]
-    [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float timeToJumpApex = 0.4f;
+    `[SerializeField] private float jumpHeight = 2f;
+    `[SerializeField] private float timeToJumpApex = 0.4f;
 
-    private float gravity;
-    private float initalJumpVelocity;
+    `private float gravity;
+    `private float initalJumpVelocity;
 
     [Header("Movement Settings")]
-    [SerializeField] private float initSpeed = 0.5f;
-    [SerializeField] private float maxSpeed = 7.0f;
-    [SerializeField] private float acceleration = 3.0f;
+    `[SerializeField] private float initSpeed = 0.5f;
+    `[SerializeField] private float maxSpeed = 7.0f;
+    `[SerializeField] private float acceleration = 3.0f;
 
     [Header("Weapon Settings")]
-    [SerializeField] private Transform weaponAttachPoint;
-    public Transform WeaponAttachPoint => weaponAttachPoint;
-    public Collider Collider => col;
+    `[SerializeField] private Transform weaponAttachPoint;
+    `public Transform WeaponAttachPoint => weaponAttachPoint;
+    `public Collider Collider => col;
 
-    private Vector2 moveInput = Vector2.zero;
-    private Vector3 velocity = Vector3.zero;
-    private float currentSpeed = 0.0f;
-    private bool jumpPressed = false;
+    `private Vector2 moveInput = Vector2.zero;
+    `private Vector3 velocity = Vector3.zero;
+    `private float currentSpeed = 0.0f;
+    `private bool jumpPressed = false;
 
-    private LayerMask stairsLayer;
+    `private LayerMask stairsLayer;
 
     #region Input Handling
     void OnEnable()
@@ -61,8 +61,7 @@ public class PlayerController : MonoBehaviour
         if (interactableObject != null && pressed)
         {
             WeaponBase weapon = interactableObject as WeaponBase;
-            if (curWeapon != null && weapon != null)
-                return;
+            if (curWeapon != null && weapon != null) return;
 
             if (weapon != null && curWeapon == null)
                 curWeapon = weapon;
@@ -80,13 +79,12 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    // Start is called before the first frame update
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cc = GetComponent<CharacterController>();
         col = GetComponent<Collider>();
-        //anim = GetComponentInChildren<Animator>();
+        anim = GetComponentInChildren<Animator>();
 
         CalculateJumpVariables();
 
@@ -116,7 +114,7 @@ public class PlayerController : MonoBehaviour
             timeToJumpApex = 0.4f;
             jumpHeight = 2f;
         }
-
+        
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         initalJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
@@ -128,7 +126,7 @@ public class PlayerController : MonoBehaviour
         Ray newRay = new Ray(transform.position, transform.forward);
         RaycastHit hitInfo;
 
-        //Debug.DrawRay(newRay.origin, newRay.direction * 10.0f, Color.red, 0.1f);
+        Debug.DrawRay(newRay.origin, newRay.direction * 10.0f, Color.red, 0.1f);
         bool hitSomething = Physics.Raycast(newRay, out hitInfo, 10.0f, stairsLayer);
         if (hitSomething)
         {
@@ -150,9 +148,9 @@ public class PlayerController : MonoBehaviour
         Vector3 projectedMoveDirection = ProjectedMoveDirection();
         UpdateCharacterVelocity(projectedMoveDirection);
         UpdateCharacterRotation(projectedMoveDirection);
-
+        
         cc.Move(velocity * Time.fixedDeltaTime);
-        //anim.SetFloat("speed", currentSpeed / maxSpeed);
+        anim.SetFloat("speed", currentSpeed / maxSpeed);
     }
 
     #region Movement Helpers
@@ -172,12 +170,9 @@ public class PlayerController : MonoBehaviour
 
     void UpdateCharacterVelocity(Vector3 projectedMoveDirection)
     {
-        if (moveInput == Vector2.zero)
-            currentSpeed = 0f;
-        else if (currentSpeed == 0.0f)
-            currentSpeed = initSpeed;
-        else
-            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
+        if (moveInput == Vector2.zero) currentSpeed = 0f;
+        else if (currentSpeed == 0.0f) currentSpeed = initSpeed;
+        else currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
 
 
         velocity.x = projectedMoveDirection.x * currentSpeed;
@@ -226,6 +221,7 @@ public class PlayerController : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-
+        
     }
 }
+*/
