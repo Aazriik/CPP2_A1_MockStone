@@ -7,38 +7,38 @@ using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 { 
-    CharacterController cc;
-    Collider col;
-    Animator anim;
-    Camera mainCamera;
-    WeaponBase curWeapon = null;
-    IInteract interactableObject = null;
+    `CharacterController cc;
+    `Collider col;
+    `Animator anim;
+    `Camera mainCamera;
+    `WeaponBase curWeapon = null;
+    `IInteract interactableObject = null;
 
-    public GameObject interactImage;
+    `public GameObject interactImage;
 
     [Header("Jump Settiings")]
-    [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float timeToJumpApex = 0.4f;
+    `[SerializeField] private float jumpHeight = 2f;
+    `[SerializeField] private float timeToJumpApex = 0.4f;
 
-    private float gravity;
-    private float initalJumpVelocity;
+    `private float gravity;
+    `private float initalJumpVelocity;
 
     [Header("Movement Settings")]
-    [SerializeField] private float initSpeed = 0.5f;
-    [SerializeField] private float maxSpeed = 7.0f;
-    [SerializeField] private float acceleration = 3.0f;
+    `[SerializeField] private float initSpeed = 0.5f;
+    `[SerializeField] private float maxSpeed = 7.0f;
+    `[SerializeField] private float acceleration = 3.0f;
 
     [Header("Weapon Settings")]
-    [SerializeField] private Transform weaponAttachPoint;
-    public Transform WeaponAttachPoint => weaponAttachPoint;
-    public Collider Collider => col;
+    `[SerializeField] private Transform weaponAttachPoint;
+    `public Transform WeaponAttachPoint => weaponAttachPoint;
+    `public Collider Collider => col;
 
-    private Vector2 moveInput = Vector2.zero;
-    private Vector3 velocity = Vector3.zero;
-    private float currentSpeed = 0.0f;
-    private bool jumpPressed = false;
+    `private Vector2 moveInput = Vector2.zero;
+    `private Vector3 velocity = Vector3.zero;
+    `private float currentSpeed = 0.0f;
+    `private bool jumpPressed = false;
 
-    private LayerMask stairsLayer;
+    `private LayerMask stairsLayer;
 
     #region Input Handling
     void OnEnable()
