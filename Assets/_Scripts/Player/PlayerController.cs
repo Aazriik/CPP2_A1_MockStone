@@ -1,9 +1,20 @@
+// Mockstone Player Controller
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor;
+using System;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
     CharacterController cc;
+    Collider col;
+    //Animator anim;
+    Camera mainCamera;
+    WeaponBase curWeapon = null;
+    IInteract interactableObject = null;
+
+    public GameObject interactImage;
 
     [Header("Jump Settiings")]
     [SerializeField] private float jumpHeight = 2f;
@@ -12,53 +23,78 @@ public class PlayerController : MonoBehaviour
     private float gravity;
     private float initalJumpVelocity;
 
+    [Header("Movement Settings")]
+    [SerializeField] private float initSpeed = 0.5f;
+    [SerializeField] private float maxSpeed = 7.0f;
+    [SerializeField] private float acceleration = 3.0f;
+
+    [Header("Weapon Settings")]
+    [SerializeField] private Transform weaponAttachPoint;
+    public Transform WeaponAttachPoint => weaponAttachPoint;
+    public Collider Collider => col;
+
     private Vector2 moveInput = Vector2.zero;
     private Vector3 velocity = Vector3.zero;
+    private float currentSpeed = 0.0f;
     private bool jumpPressed = false;
 
     private LayerMask stairsLayer;
-
-    // --- LOOK ADDED (minimal) ---
-    [Header("Look Settings")]
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private float lookSensitivity = 2f;
-
-    private Vector2 lookInput = Vector2.zero;
-    private float xRotation = 0f;
-    // ---------------------------
 
     #region Input Handling
     void OnEnable()
     {
         InputManager.Instance.OnMoveEvent += OnMove;
         InputManager.Instance.OnJumpEvent += OnJump;
-
-        InputManager.Instance.OnLookEvent += OnLook;
+        InputManager.Instance.OnInteractEvent += OnInteract;
     }
-    void OnDisable()
-    {
-        InputManager.Instance.OnMoveEvent -= OnMove;
-        InputManager.Instance.OnJumpEvent -= OnJump;
 
-        InputManager.Instance.OnLookEvent -= OnLook;
-    }
+    //void OnDisable()
+    //{
+    //    InputManager.Instance.OnMoveEvent -= OnMove;
+    //    InputManager.Instance.OnJumpEvent -= OnJump;
+    //}
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
-    void OnLook(Vector2 input) => lookInput = input;
+    void OnInteract(bool pressed)
+    {
+        if (interactableObject != null && pressed)
+        {
+            WeaponBase weapon = interactableObject as WeaponBase;
+            if (curWeapon != null && weapon != null)
+                return;
+
+            if (weapon != null && curWeapon == null)
+                curWeapon = weapon;
+
+
+            interactableObject.Interact(this);
+            return;
+        }
+
+        if (pressed && curWeapon != null)
+        {
+            curWeapon.Drop(col);
+            curWeapon = null;
+        }
+    }
     #endregion
 
+    // Start is called before the first frame update
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        col = GetComponent<Collider>();
+        //anim = GetComponentInChildren<Animator>();
+
         CalculateJumpVariables();
 
         stairsLayer = LayerMask.GetMask("Stairs");
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        mainCamera = Camera.main;
     }
 
+    //this triggers when a value is changed in the inspector
     void OnValidate()
     {
         CalculateJumpVariables();
@@ -87,12 +123,12 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        UpdateLook();
+        CheckInteractionUI();
 
         Ray newRay = new Ray(transform.position, transform.forward);
         RaycastHit hitInfo;
 
-        Debug.DrawRay(newRay.origin, newRay.direction * 10.0f, Color.red, 0.1f);
+        //Debug.DrawRay(newRay.origin, newRay.direction * 10.0f, Color.red, 0.1f);
         bool hitSomething = Physics.Raycast(newRay, out hitInfo, 10.0f, stairsLayer);
         if (hitSomething)
         {
@@ -100,37 +136,52 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void CheckInteractionUI()
     {
-        UpdateCharacterVelocity();
-        cc.Move(velocity * Time.fixedDeltaTime);
+        if (interactableObject != null && interactImage.activeSelf == false)
+            interactImage.SetActive(true);
+        else if (interactableObject == null && interactImage.activeSelf == true)
+            interactImage.SetActive(false);
     }
 
-    void UpdateCharacterVelocity()
+    // Update is called once per frame
+    void FixedUpdate()
     {
-        // Camera-relative movement using camera YAW only (best practice)
-        float yaw = (cameraTransform != null) ? cameraTransform.eulerAngles.y : transform.eulerAngles.y;
-        Quaternion yawRotation = Quaternion.Euler(0f, yaw, 0f);
+        Vector3 projectedMoveDirection = ProjectedMoveDirection();
+        UpdateCharacterVelocity(projectedMoveDirection);
+        UpdateCharacterRotation(projectedMoveDirection);
 
-        Vector3 inputDir = new Vector3(moveInput.x, 0f, moveInput.y);
-        if (inputDir.sqrMagnitude > 1f) inputDir.Normalize(); // no faster diagonals
+        cc.Move(velocity * Time.fixedDeltaTime);
+        //anim.SetFloat("speed", currentSpeed / maxSpeed);
+    }
 
-        Vector3 moveDir = yawRotation * inputDir;
+    #region Movement Helpers
+    private Vector3 ProjectedMoveDirection()
+    {
+        Vector3 cameraFwd = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
 
-        velocity.x = moveDir.x * 5f;
-        velocity.z = moveDir.z * 5f;
+        cameraFwd.y = 0;
+        cameraRight.y = 0;
 
-        // Jump / gravity 
-        if (cc.isGrounded)
-        {
-            velocity.y = -cc.skinWidth;
-            if (jumpPressed)
-                velocity.y = initalJumpVelocity;
-        }
+        cameraFwd.Normalize();
+        cameraRight.Normalize();
+
+        return cameraFwd * moveInput.y + cameraRight * moveInput.x;
+    }
+
+    void UpdateCharacterVelocity(Vector3 projectedMoveDirection)
+    {
+        if (moveInput == Vector2.zero)
+            currentSpeed = 0f;
+        else if (currentSpeed == 0.0f)
+            currentSpeed = initSpeed;
         else
-        {
-            velocity.y += gravity * Time.fixedDeltaTime;
-        }
+            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
+
+
+        velocity.x = projectedMoveDirection.x * currentSpeed;
+        velocity.z = projectedMoveDirection.z * currentSpeed;
 
         if (cc.isGrounded)
         {
@@ -145,29 +196,36 @@ public class PlayerController : MonoBehaviour
             velocity.y += gravity * Time.fixedDeltaTime;
         }
     }
-
-    void UpdateLook()
+    private void UpdateCharacterRotation(Vector3 projectedMoveDirection)
     {
-        // Horizontal look (rotate player body)
-        float mouseX = lookInput.x * lookSensitivity;
-        transform.Rotate(Vector3.up * mouseX);
-
-        // Vertical look (rotate camera up/down)
-        float mouseY = lookInput.y * lookSensitivity;
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -80f, 80f);
-
-        if (cameraTransform != null)
-            cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        if (moveInput != Vector2.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(projectedMoveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.2f);
+        }
     }
+    #endregion
 
     private void OnTriggerEnter(Collider collision)
     {
-        //Debug.Log("Collision Detected with " + collision.gameObject.name);
+        IInteract interactable = collision.GetComponent<IInteract>();
+        if (interactable != null)
+        {
+            interactableObject = interactable;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        IInteract interactable = other.GetComponent<IInteract>();
+        if (interactable != null && interactableObject.Equals(interactable))
+        {
+            interactableObject = null;
+        }
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //Debug.Log("Controller hit " + hit.gameObject.name);
+
     }
 }
