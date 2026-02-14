@@ -260,7 +260,7 @@ MonoBehaviour:
   timeToJumpApex: 0.4
   initSpeed: 2
   maxSpeed: 4
-  acceleration: 3
+  acceleration: 2
   weaponAttachPoint: {fileID: 7526300638509393261}
 --- !u!143 &7946721320975016971
 CharacterController:
@@ -480,7 +480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5136287879014956566, guid: 2159219d7c15f1e45937a2709248443f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.055
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5136287879014956566, guid: 2159219d7c15f1e45937a2709248443f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -672,8 +672,38 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3751196807708371133, guid: 2159219d7c15f1e45937a2709248443f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3573688177348715851}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5479774845151798444, guid: 2159219d7c15f1e45937a2709248443f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8409342747048449283}
   m_SourcePrefab: {fileID: 100100000, guid: 2159219d7c15f1e45937a2709248443f, type: 3}
+--- !u!1 &419137220413804545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5479774845151798444, guid: 2159219d7c15f1e45937a2709248443f, type: 3}
+  m_PrefabInstance: {fileID: 5322411591043134637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8409342747048449283
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419137220413804545}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 9d5ebce698b369149ae508733c6b2cfb, type: 3}
+  m_Controller: {fileID: 9100000, guid: 671c1a9e563c0fd4785e229c5aa1d48d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 1
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &1052368659400919739 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5136287879014956566, guid: 2159219d7c15f1e45937a2709248443f, type: 3}

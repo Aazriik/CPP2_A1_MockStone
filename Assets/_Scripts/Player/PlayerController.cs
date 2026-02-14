@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     CharacterController cc;
     Collider col;
-    //Animator anim;
+    Animator anim;
     Camera mainCamera;
     WeaponBase curWeapon = null;
     IInteract interactableObject = null;
@@ -80,13 +80,12 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    // Start is called before the first frame update
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cc = GetComponent<CharacterController>();
         col = GetComponent<Collider>();
-        //anim = GetComponentInChildren<Animator>();
+        anim = GetComponentInChildren<Animator>();
 
         CalculateJumpVariables();
 
@@ -152,7 +151,7 @@ public class PlayerController : MonoBehaviour
         UpdateCharacterRotation(projectedMoveDirection);
 
         cc.Move(velocity * Time.fixedDeltaTime);
-        //anim.SetFloat("speed", currentSpeed / maxSpeed);
+        anim.SetFloat("speed", currentSpeed / maxSpeed);
     }
 
     #region Movement Helpers
