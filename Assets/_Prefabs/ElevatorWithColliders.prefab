@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4052906271184368980}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OutsideButtonColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 561757091382891625}
   - component: {fileID: 5745234336561909204}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonP/Hub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7141938989484172145}
   - component: {fileID: 4761314899359015389}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CloseDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 7287027445813322532}
   - component: {fileID: 2650000096322406007}
   - component: {fileID: 8938179906499475298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 5481155197385188437}
   - component: {fileID: 2842839818606334462}
   - component: {fileID: 1029649556283149760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_27
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5895572202540851693}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorCage_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7993978881018003632}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightOutsideDoor_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 2322361756710107502}
   - component: {fileID: 2771888384377367640}
   - component: {fileID: 6839386229471318064}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 7870890007967178319}
   - component: {fileID: 2412112522409661456}
   - component: {fileID: 2114396911136162122}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -577,7 +577,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8855205476917488040}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 7893813990917820321}
   - component: {fileID: 8197533228463334567}
   - component: {fileID: 8914576881795231713}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FaceTopSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,7 +965,7 @@ GameObject:
   - component: {fileID: 9029713242656187475}
   - component: {fileID: 8495145495469934981}
   - component: {fileID: 2779104030295289817}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1052,7 +1052,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7065193914218131458}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorCallingButtons007_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1086,7 +1086,7 @@ GameObject:
   - component: {fileID: 1477785327718723309}
   - component: {fileID: 551048122074748866}
   - component: {fileID: 8593335586891244332}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_34
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1174,7 +1174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6597726512293567700}
   - component: {fileID: 8398187010399016471}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HelpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1231,7 +1231,7 @@ GameObject:
   - component: {fileID: 260146355940812312}
   - component: {fileID: 1542788569843178136}
   - component: {fileID: 6898034014707570346}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FaceLeftSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1582,7 +1582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2246369011050148295}
   - component: {fileID: 6778289339207333733}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OpenDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1636,7 +1636,7 @@ GameObject:
   - component: {fileID: 7686014199278910953}
   - component: {fileID: 1419892429172970155}
   - component: {fileID: 1128057855929942348}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_39
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1723,7 +1723,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9017849269921661432}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GLTF_SceneRootNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1767,7 +1767,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8938390151669556984}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 7738270132185013380}
   - component: {fileID: 5072933946322246954}
   - component: {fileID: 1929191933139935543}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1887,7 +1887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3881538348451553660}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1919,7 +1919,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6026284569941090646}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorCallingButtons003_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1953,7 +1953,7 @@ GameObject:
   - component: {fileID: 1394825719180590860}
   - component: {fileID: 1544994315410700285}
   - component: {fileID: 3371725006121497293}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2042,7 +2042,7 @@ GameObject:
   - component: {fileID: 6523217375487687599}
   - component: {fileID: 8184717053223962731}
   - component: {fileID: 4784892081725376031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2131,7 +2131,7 @@ GameObject:
   - component: {fileID: 8920530665291063591}
   - component: {fileID: 4341695879991034087}
   - component: {fileID: 5929245801683829971}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2219,7 +2219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 146270534244629125}
   - component: {fileID: 4375937133617378283}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2271,7 +2271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5394676006662807642}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HandleElevator001_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2304,7 +2304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2903116458941426598}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightInteriorDoor_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2336,7 +2336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5124994923466275664}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2379,7 +2379,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3894089124860916915}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HandleElevator_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2414,7 +2414,7 @@ GameObject:
   - component: {fileID: 8424473232444096139}
   - component: {fileID: 8642413994201647187}
   - component: {fileID: 5188012405084275225}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2502,7 +2502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3041979148747432630}
   - component: {fileID: 4348666183670343900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2555,7 +2555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1979270345635931632}
   - component: {fileID: 9058772093224648020}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpecialButton/SecretLvl?
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2607,7 +2607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6790635237514105667}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorOutsideFace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2642,7 +2642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3726022381700460180}
   - component: {fileID: 8423432962132645541}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2699,7 +2699,7 @@ GameObject:
   - component: {fileID: 5812367134515509662}
   - component: {fileID: 2992327623936187078}
   - component: {fileID: 2959577540196629474}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FaceRightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3051,7 +3051,7 @@ GameObject:
   - component: {fileID: 5538784313030357722}
   - component: {fileID: 6527117925009260937}
   - component: {fileID: 1047131769304314658}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3140,7 +3140,7 @@ GameObject:
   - component: {fileID: 5534037383475043414}
   - component: {fileID: 227240873260810645}
   - component: {fileID: 7170479015634151718}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3228,7 +3228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6670063244458749526}
   - component: {fileID: 3278035728456012851}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3280,7 +3280,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4865060322441601570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorCallingButtons_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3313,7 +3313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2448516305468699177}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mirror_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3347,7 +3347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1530728042398101356}
   - component: {fileID: 8947465189794530209}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3401,7 +3401,7 @@ GameObject:
   - component: {fileID: 4162444926558074387}
   - component: {fileID: 1624640102970204824}
   - component: {fileID: 5137921141263354010}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3490,7 +3490,7 @@ GameObject:
   - component: {fileID: 2420760296515759509}
   - component: {fileID: 1579157357158466929}
   - component: {fileID: 486010976473035119}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3579,7 +3579,7 @@ GameObject:
   - component: {fileID: 7671786330087570793}
   - component: {fileID: 6036077213625605973}
   - component: {fileID: 2095150805653222448}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_37
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3667,7 +3667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1764823400070602686}
   - component: {fileID: 1710888168896266258}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3720,7 +3720,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2441300079770321602}
   - component: {fileID: 7111426451970694183}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Button2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3773,7 +3773,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3015543393953629252}
   - component: {fileID: 4541714824435475407}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3825,7 +3825,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1022930510922069955}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorInteriorButtons_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3859,7 +3859,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7262869523804562306}
   - component: {fileID: 89945234352181523}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3913,7 +3913,7 @@ GameObject:
   - component: {fileID: 1121172595577114516}
   - component: {fileID: 6755178210108570695}
   - component: {fileID: 5883881779721990274}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4000,7 +4000,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5587825206405821499}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HandleElevator002_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4033,7 +4033,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5287270833204859404}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorOutsideArmature_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4065,7 +4065,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4623022162304963117}
-  m_Layer: 0
+  - component: {fileID: -1593970201865098687}
+  - component: {fileID: 7299006930985756014}
+  - component: {fileID: -1631888394353873615}
+  m_Layer: 6
   m_Name: ElevatorWithColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4089,6 +4092,68 @@ Transform:
   - {fileID: 8304731717183660613}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
+--- !u!65 &-1593970201865098687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011128773394378182}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7299006930985756014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011128773394378182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69d00f0b91e6a24db4c647de8e06ec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelTransitionInteract
+  sceneAsset: {fileID: 0}
+  sceneName: 
+--- !u!54 &-1631888394353873615
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011128773394378182}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8368348513209308482
 GameObject:
   m_ObjectHideFlags: 0
@@ -4098,7 +4163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 746559096492461247}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftInteriorDoor_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4130,7 +4195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 77295512892291881}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftOutsideDoor_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4162,7 +4227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6402608675748881374}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ElevatorCallingButtons006_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4196,7 +4261,7 @@ GameObject:
   - component: {fileID: 4488160492221368028}
   - component: {fileID: 1126446014381789041}
   - component: {fileID: 7380911448254141228}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4285,7 +4350,7 @@ GameObject:
   - component: {fileID: 3885457077674977422}
   - component: {fileID: 1380981163074639049}
   - component: {fileID: 8666476896152733967}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_30
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4373,7 +4438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 957424695788611971}
   - component: {fileID: 2328970852447360431}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ButtonDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4427,7 +4492,7 @@ GameObject:
   - component: {fileID: 4379768201507250703}
   - component: {fileID: 4461201933628459686}
   - component: {fileID: 5872323645384330052}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4516,7 +4581,7 @@ GameObject:
   - component: {fileID: 525554419393721099}
   - component: {fileID: 2346580939270579359}
   - component: {fileID: 2836717854050137360}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4657,6 +4722,10 @@ PrefabInstance:
     - target: {fileID: 5661339682857587944, guid: 3a99db2f014de2a4890bd81fa9575e46, type: 3}
       propertyPath: m_Name
       value: Floor_3x3_1Side (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661339682857587944, guid: 3a99db2f014de2a4890bd81fa9575e46, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

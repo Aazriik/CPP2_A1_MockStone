@@ -662,6 +662,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 8418334}
+    - target: {fileID: 7299006930985756014, guid: af1b3f7ec6aebcf46b3ff0c6f61574e8, type: 3}
+      propertyPath: sceneName
+      value: Hub
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299006930985756014, guid: af1b3f7ec6aebcf46b3ff0c6f61574e8, type: 3}
+      propertyPath: sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: a31ef4de3ebc03f43a7a02d55eb3814f, type: 3}
     - target: {fileID: 8011128773394378182, guid: af1b3f7ec6aebcf46b3ff0c6f61574e8, type: 3}
       propertyPath: m_Name
       value: ElevatorWithColliders.Start
