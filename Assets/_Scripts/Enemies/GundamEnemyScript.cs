@@ -13,8 +13,8 @@ public class GundamEnemyScript : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float initSpeed = 2.0f;
-    [SerializeField] private float maxSpeed = 7.0f;
-    [SerializeField] private float acceleration = 3.0f;
+    //[SerializeField] private float maxSpeed = 7.0f;
+    //[SerializeField] private float acceleration = 3.0f;
 
     private LayerMask playerLayer;
     private float currentSpeed = 0.0f;
