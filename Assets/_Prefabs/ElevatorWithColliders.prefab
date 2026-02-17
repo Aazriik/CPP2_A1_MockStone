@@ -4125,8 +4125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69d00f0b91e6a24db4c647de8e06ec3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelTransitionInteract
-  sceneAsset: {fileID: 0}
-  sceneName: 
+  sceneAsset: {fileID: 102900000, guid: a31ef4de3ebc03f43a7a02d55eb3814f, type: 3}
+  sceneName: Hub
 --- !u!54 &-1631888394353873615
 Rigidbody:
   m_ObjectHideFlags: 0
