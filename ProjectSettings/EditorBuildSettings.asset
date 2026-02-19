@@ -8,6 +8,27 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Main Menu.unity
     guid: 5390b1add58193549b3f238027dce562
+  - enabled: 1
+    path: Assets/_Scenes/WaelLevel.unity
+    guid: f267b9855690cbb4a8166d51eadbbe76
+  - enabled: 1
+    path: Assets/_Scenes/ArtemisLevel.unity
+    guid: 8974d376604dad244804bf1b51f2ca9f
+  - enabled: 1
+    path: Assets/_Scenes/ConnorLevel.unity
+    guid: aa8bcf6d9f0dd254e90a35a7b3c23024
+  - enabled: 1
+    path: Assets/_Scenes/GabrielLevel.unity
+    guid: 25d53ebaa7250e2419ec135bf1966836
+  - enabled: 1
+    path: Assets/_Scenes/Hub.unity
+    guid: a31ef4de3ebc03f43a7a02d55eb3814f
+  - enabled: 1
+    path: Assets/_Scenes/KellsLevel.unity
+    guid: 579bc7bd4b14f2e4a950076712cf6682
+  - enabled: 1
+    path: Assets/_Scenes/MekyleLevel.unity
+    guid: d3697104dccff6546aaaaf05f6dab292
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
