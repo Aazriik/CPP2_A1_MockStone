@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float initSpeed = 0.5f;
     [SerializeField] private float maxSpeed = 7.0f;
     [SerializeField] private float acceleration = 3.0f;
+    [SerializeField] private float crouchSpeed = 2.5f;
+    [SerializeField] private bool enableSprint = true;
+    [SerializeField] private float sprintMultiplier = 1.5f;
 
     [Header("Weapon Settings")]
     [SerializeField] private Transform weaponAttachPoint;
@@ -37,6 +40,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private float currentSpeed = 0.0f;
     private bool jumpPressed = false;
+    private bool crouchPressed = false;                                                                                                                         
+    private bool sprintPressed = false;
 
     private LayerMask stairsLayer;
 
@@ -46,6 +51,8 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnMoveEvent += OnMove;
         InputManager.Instance.OnJumpEvent += OnJump;
         InputManager.Instance.OnInteractEvent += OnInteract;
+        InputManager.Instance.OnCrouchEvent += OnCrouch;
+        InputManager.Instance.OnSprintEvent += OnSprint;
     }
 
     //void OnDisable()
@@ -56,6 +63,8 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
+    void OnCrouch(bool pressed) => crouchPressed = pressed;
+    void OnSprint(bool pressed) => sprintPressed = pressed;
     void OnInteract(bool pressed)
     {
         if (interactableObject != null && pressed)
@@ -171,12 +180,29 @@ public class PlayerController : MonoBehaviour
 
     void UpdateCharacterVelocity(Vector3 projectedMoveDirection)
     {
+        float targetSpeed = maxSpeed;
+
+        if (crouchPressed)
+        {
+            targetSpeed = crouchSpeed;
+        }
+        else if (enableSprint && sprintPressed)
+        {
+            targetSpeed = maxSpeed * sprintMultiplier;
+        }
+
         if (moveInput == Vector2.zero)
-            currentSpeed = 0f;
+        {
+             currentSpeed = 0;
+        }
         else if (currentSpeed == 0.0f)
+        {
             currentSpeed = initSpeed;
+        }
         else
-            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
+        {
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
+        }
 
 
         velocity.x = projectedMoveDirection.x * currentSpeed;
