@@ -10,6 +10,8 @@ public class InputManager: Singleton<InputManager>, InputSystem_Actions.IPlayerA
     public event System.Action<Vector2> OnMoveEvent;
     public event System.Action<bool> OnJumpEvent;
     public event System.Action<bool> OnInteractEvent;
+    public event System.Action<bool> OnCrouchEvent;
+    public event System.Action<bool> OnSprintEvent;
 
     void Awake()
     {
@@ -60,7 +62,7 @@ public class InputManager: Singleton<InputManager>, InputSystem_Actions.IPlayerA
 
     public void OnCrouch(InputAction.CallbackContext context)
     {
-        //throw new System.NotImplementedException();
+        OnCrouchEvent?.Invoke(context.ReadValueAsButton());
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -80,6 +82,6 @@ public class InputManager: Singleton<InputManager>, InputSystem_Actions.IPlayerA
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        //throw new System.NotImplementedException();
+        OnSprintEvent?.Invoke(context.ReadValueAsButton());
     }
 }
