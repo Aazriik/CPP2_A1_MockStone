@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PickupItem : MonoBehaviour
+public class PickupItem2 : MonoBehaviour
 {
     public int value = 1; // how much this item gives
 
@@ -8,7 +8,7 @@ public class PickupItem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Picked up item!");
+            Debug.Log("Picked up Health item!");
 
             Destroy(gameObject);
         }
