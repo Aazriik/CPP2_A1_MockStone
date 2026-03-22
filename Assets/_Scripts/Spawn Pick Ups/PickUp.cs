@@ -1,21 +1,24 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+using System;
 
 public class PickupItem : MonoBehaviour
 {
-    public int value = 1; // how much this item gives
+    public int value = 1;
+    public string uniqueLocationID;
 
-    // Assign one of these in the inspector (UI Text or TextMeshPro). If left null,
-    // the script will try to find a GameObject named "Collected" at runtime.
-    public Text collectedText;
-    public TMP_Text collectedTMP;
+    public static event Action<int, int> OnCollectiblePickedUp;
 
     private static int collectedCount = 0;
+    private const int MaxCollectibles = 35;
 
     private void Start()
     {
-        UpdateCollectedText();
+        if (SaveManager.Instance != null)
+        {
+            collectedCount = SaveManager.Instance.CurrentData.totalCollectedItems;
+        }
+
+        OnCollectiblePickedUp?.Invoke(collectedCount, MaxCollectibles);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -24,45 +27,22 @@ public class PickupItem : MonoBehaviour
         {
             collectedCount += value;
             Debug.Log("Picked up item! Collected: " + collectedCount);
-            UpdateCollectedText();
+
+            if (SaveManager.Instance != null)
+            {
+                SaveManager.Instance.CurrentData.totalCollectedItems = collectedCount;
+
+                if (!string.IsNullOrEmpty(uniqueLocationID) && !SaveManager.Instance.CurrentData.collectedItemIDs.Contains(uniqueLocationID))
+                {
+                    SaveManager.Instance.CurrentData.collectedItemIDs.Add(uniqueLocationID);
+                }
+
+                SaveManager.Instance.SaveGame();
+            }
+
+            OnCollectiblePickedUp?.Invoke(collectedCount, MaxCollectibles);
 
             Destroy(gameObject);
-        }
-    }
-
-    private void UpdateCollectedText()
-    {
-        // Update the UI text to show the current collected count out of 35
-        string text = collectedCount + "/35";
-
-        if (collectedText != null)
-            collectedText.text = text;
-
-        if (collectedTMP != null)
-            collectedTMP.text = text;
-
-        // If no reference assigned, try to find a GameObject named "Collected" and use its text component
-        if (collectedText == null && collectedTMP == null)
-        {
-            var go = GameObject.Find("Collected");
-            if (go != null)
-            {
-                var t = go.GetComponent<Text>();
-                if (t != null)
-                {
-                    collectedText = t;
-                    collectedText.text = text;
-                    return;
-                }
-
-                var tt = go.GetComponent<TMP_Text>();
-                if (tt != null)
-                {
-                    collectedTMP = tt;
-                    collectedTMP.text = text;
-                    return;
-                }
-            }
         }
     }
 }

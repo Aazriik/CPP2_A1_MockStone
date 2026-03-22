@@ -8,25 +8,56 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        List<int> usedIndexes = new List<int>();
+        List<int> availableSpawnIndexes = new List<int>();
+        int alreadyCollectedFromThisSpawner = 0;
 
-        for (int i = 0; i < objectsToSpawn.Length; i++)
+        // Check every spawn point against the save file to see if it was already looted
+        for (int i = 0; i < spawnPoints.Length; i++)
         {
-            int randomIndex;
+            // Use the GameObject name in the Unity Inspector as the unique ID
+            string pointID = spawnPoints[i].name;
 
-            do
+            if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.collectedItemIDs.Contains(pointID))
             {
-                randomIndex = Random.Range(0, spawnPoints.Length);
+                alreadyCollectedFromThisSpawner++;
             }
-            while (usedIndexes.Contains(randomIndex));
+            else
+            {
+                availableSpawnIndexes.Add(i);
+            }
+        }
 
-            usedIndexes.Add(randomIndex);
+        // Deduct the already collected items so we don't spawn extras
+        int amountToSpawn = objectsToSpawn.Length - alreadyCollectedFromThisSpawner;
 
-            Instantiate(
+        if (amountToSpawn <= 0)
+        {
+            return; // Everything from this spawner has been collected
+        }
+
+        // Spawn the remaining items in random, available locations
+        for (int i = 0; i < amountToSpawn; i++)
+        {
+            if (availableSpawnIndexes.Count == 0) break;
+
+            int randomListIndex = Random.Range(0, availableSpawnIndexes.Count);
+            int actualSpawnPointIndex = availableSpawnIndexes[randomListIndex];
+
+            // Remove the location so two items don't spawn in the exact same spot
+            availableSpawnIndexes.RemoveAt(randomListIndex);
+
+            GameObject spawnedItem = Instantiate(
                 objectsToSpawn[i],
-                spawnPoints[randomIndex].position,
+                spawnPoints[actualSpawnPointIndex].position,
                 Quaternion.identity
             );
+
+            // Pass the location's ID into the newly spawned item so it knows its identity
+            PickupItem pickupScript = spawnedItem.GetComponent<PickupItem>();
+            if (pickupScript != null)
+            {
+                pickupScript.uniqueLocationID = spawnPoints[actualSpawnPointIndex].name;
+            }
         }
     }
 }

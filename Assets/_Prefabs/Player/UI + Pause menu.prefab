@@ -761,6 +761,7 @@ GameObject:
   - component: {fileID: 8549713501955338834}
   - component: {fileID: 8360314290870261692}
   - component: {fileID: 4498498463782485817}
+  - component: {fileID: 7219091325695769863}
   m_Layer: 5
   m_Name: UI + Pause menu
   m_TagString: Untagged
@@ -853,6 +854,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7219091325695769863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4272197830064129211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b9c95f5b6b3bb41b91124edd4d62cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleUI
+  collectedText: {fileID: 0}
+  collectedTMP: {fileID: 1716974203423037761}
 --- !u!1 &4403732912301828744
 GameObject:
   m_ObjectHideFlags: 0
