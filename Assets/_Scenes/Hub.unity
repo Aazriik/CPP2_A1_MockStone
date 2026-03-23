@@ -22954,6 +22954,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 673661324680045124, guid: 0b45e9f9750870a4e97e92d984c362f0, type: 3}
+      propertyPath: interactImage
+      value: 
+      objectReference: {fileID: 1662503657}
     - target: {fileID: 1283245393921031076, guid: 0b45e9f9750870a4e97e92d984c362f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 171.85
@@ -22998,13 +23002,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2911033436771779718, guid: 0b45e9f9750870a4e97e92d984c362f0, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1946845798}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b45e9f9750870a4e97e92d984c362f0, type: 3}
 --- !u!1001 &707612865
 PrefabInstance:
@@ -131247,6 +131249,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9008813494530869528, guid: c0ee31c2922382549829e04cb976bbf3, type: 3}
   m_PrefabInstance: {fileID: 1660239558}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1662503657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2885862744075143383, guid: 0b45e9f9750870a4e97e92d984c362f0, type: 3}
+  m_PrefabInstance: {fileID: 700216701}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1666397925
 GameObject:
   m_ObjectHideFlags: 0
@@ -139933,24 +139940,6 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
---- !u!1 &1946845794 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2911033436771779718, guid: 0b45e9f9750870a4e97e92d984c362f0, type: 3}
-  m_PrefabInstance: {fileID: 700216701}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1946845798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946845794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7089ca900c31271428de8b807e3704c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 100
 --- !u!1001 &1948082803
 PrefabInstance:
   m_ObjectHideFlags: 0
