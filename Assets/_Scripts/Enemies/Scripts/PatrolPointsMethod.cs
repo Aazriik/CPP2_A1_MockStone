@@ -89,17 +89,20 @@ public class BeholderBehaviour : MonoBehaviour
     void FaceTarget(Vector3 targetPos)
     {
         Vector3 dir = targetPos - transform.position;
-        dir.y = 0f;
+
         if (dir.sqrMagnitude < 0.001f) return;
 
         Quaternion targetRot = Quaternion.LookRotation(dir.normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            turnSpeed * Time.deltaTime
+        );
     }
 
     void MoveForward()
     {
         Vector3 forward = transform.forward;
-        forward.y = 0f;
         transform.position += forward.normalized * moveSpeed * Time.deltaTime;
     }
 }
