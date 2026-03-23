@@ -1,15 +1,48 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
+using TMPro; // Required to alter TextMeshPro UI elements
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class Menu : MonoBehaviour
 {
-    // Called by the UI Button OnClick to load the Hub scene
+    public TMP_Text startButtonText;
+    private string levelToLoad = "Hub";
+
+    private void Start()
+    {
+        string saveFilePath = Path.Combine(Application.persistentDataPath, "gamedata.sav");
+
+        // Dynamically change the button text based on whether a save file exists
+        if (File.Exists(saveFilePath))
+        {
+            if (startButtonText != null)
+            {
+                startButtonText.text = "Continue";
+            }
+
+            // Look up the last saved level so the Continue button goes to the right place
+            if (SaveManager.Instance != null && !string.IsNullOrEmpty(SaveManager.Instance.CurrentData.currentLevelName))
+            {
+                levelToLoad = SaveManager.Instance.CurrentData.currentLevelName;
+            }
+        }
+        else
+        {
+            if (startButtonText != null)
+            {
+                startButtonText.text = "Start";
+            }
+        }
+    }
+
+    // Called by the UI Button OnClick to load the scene
     public void OnStartButton()
     {
-        SceneManager.LoadScene("Hub");
+        SceneManager.LoadScene(levelToLoad);
     }
 
     // Called by the UI Button OnClick to quit the application.
