@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Pause : MonoBehaviour
 {
@@ -11,6 +14,9 @@ public class Pause : MonoBehaviour
 
     [Tooltip("Name of the Main Menu scene to load")]
     public string mainMenuSceneName = "Main Menu";
+
+    [Tooltip("Enable extra debug logging for pause/resume actions")]
+    public bool debugMode = false;
 
     bool isPaused;
     // default fixed delta time (Unity default is 0.02)
@@ -35,6 +41,7 @@ public class Pause : MonoBehaviour
         // Toggle pause with the Escape key
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
         {
+            if (debugMode) Debug.Log($"[Pause][Debug] Toggle requested. isPaused={isPaused}, timescale={Time.timeScale}, fixedDelta={Time.fixedDeltaTime}");
             if (isPaused) ResumeGame();
             else PauseGame();
         }
@@ -76,7 +83,17 @@ public class Pause : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
+        // When running inside the Unity Editor, also pause the Editor play mode so
+        // editor-driven updates are stopped (useful while testing in Editor).
+#if UNITY_EDITOR
+        EditorApplication.isPaused = true;
+#endif
+
         Debug.Log($"[Pause] Paused: timescale={Time.timeScale}, fixedDelta={Time.fixedDeltaTime}");
+        if (debugMode)
+        {
+            Debug.Log($"[Pause][Debug] pauseMenuActive={(pauseMenu!=null?pauseMenu.activeSelf.ToString():"null")}, Cursor.visible={Cursor.visible}, Cursor.lockState={Cursor.lockState}");
+        }
     }
 
     // Hide pause UI and resume time
@@ -90,6 +107,15 @@ public class Pause : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+        // When running inside the Unity Editor, unpause the Editor play mode.
+#if UNITY_EDITOR
+        EditorApplication.isPaused = false;
+#endif
+
         Debug.Log($"[Pause] Resumed: timescale={Time.timeScale}, fixedDelta={Time.fixedDeltaTime}");
+        if (debugMode)
+        {
+            Debug.Log($"[Pause][Debug] pauseMenuActive={(pauseMenu!=null?pauseMenu.activeSelf.ToString():"null")}, Cursor.visible={Cursor.visible}, Cursor.lockState={Cursor.lockState}");
+        }
     }
 }

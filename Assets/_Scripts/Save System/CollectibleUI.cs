@@ -14,7 +14,23 @@ public class CollectibleUI : MonoBehaviour
         // Fallback search if references are missing in the Inspector
         if (collectedText == null && collectedTMP == null)
         {
-            GameObject go = GameObject.Find("Collected");
+            // First try to find the object under a parent named "UI" (path: "UI/Collected")
+            GameObject go = GameObject.Find("UI/Collected");
+
+            // If that fails, try locating a parent named "UI" and search its children
+            if (go == null)
+            {
+                GameObject uiRoot = GameObject.Find("UI");
+                if (uiRoot != null)
+                {
+                    var child = uiRoot.transform.Find("Collected");
+                    if (child != null) go = child.gameObject;
+                }
+            }
+
+            // Final fallback: search globally for "Collected"
+            if (go == null) go = GameObject.Find("Collected");
+
             if (go != null)
             {
                 collectedText = go.GetComponent<Text>();

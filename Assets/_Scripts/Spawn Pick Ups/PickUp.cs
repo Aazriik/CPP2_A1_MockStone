@@ -8,7 +8,7 @@ public class PickupItem : MonoBehaviour
 
     public static event Action<int, int> OnCollectiblePickedUp;
 
-    private static int collectedCount = 0;
+    private static int collectedCount = 1;
     private const int MaxCollectibles = 35;
 
     private void Start()
