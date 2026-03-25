@@ -84,4 +84,9 @@ public class InputManager: Singleton<InputManager>, InputSystem_Actions.IPlayerA
     {
         OnSprintEvent?.Invoke(context.ReadValueAsButton());
     }
+
+    public void OnAiming(InputAction.CallbackContext context)
+    {
+        //throw new System.NotImplementedException();
+    }
 }
