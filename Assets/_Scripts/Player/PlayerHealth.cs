@@ -18,6 +18,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.currentHealth != -1)
         {
             currentHealth = SaveManager.Instance.CurrentData.currentHealth;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = maxHealth;
+            }
         }
         else
         {
@@ -48,17 +53,23 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    public void Heal(int healAmount)
+    public bool Heal(int healAmount)
     {
-        if (isDead) return;
+        if (isDead || currentHealth >= maxHealth) return false;
 
-        // Mathf.Min prevents overhealing past maxHealth
-        currentHealth = Mathf.Min(maxHealth, currentHealth + healAmount);
+        currentHealth += healAmount;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
 
         if (HUDController.Instance != null)
         {
             HUDController.Instance.UpdateHealth(currentHealth);
         }
+
+        return true;
     }
 
     private void Die()

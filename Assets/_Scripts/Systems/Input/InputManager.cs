@@ -12,6 +12,7 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
     public event System.Action<bool> OnCrouchEvent;
     public event System.Action<bool> OnSprintEvent;
     public event System.Action<bool> OnPauseEvent;
+    public event System.Action<bool> OnAttackEvent;
 
     protected override void Awake()
     {
@@ -21,8 +22,8 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
         input.Player.SetCallbacks(this);
     }
 
-    void OnEnable() => input.Enable();
-    void OnDisable() => input.Disable();
+    void OnEnable() => input?.Enable();
+    void OnDisable() => input?.Disable();
 
     public void SetPlayerControlsActive(bool active)
     {
@@ -48,7 +49,6 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
 
     // Unused actions required by the IPlayerActions Interface
     public void OnLook(InputAction.CallbackContext context) { }
-    public void OnAttack(InputAction.CallbackContext context) { }
     public void OnPrevious(InputAction.CallbackContext context) { }
     public void OnNext(InputAction.CallbackContext context) { }
 
@@ -79,5 +79,10 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
     public void OnPause(InputAction.CallbackContext context)
     {
         if (context.performed) OnPauseEvent?.Invoke(true);
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        OnAttackEvent?.Invoke(context.ReadValueAsButton());
     }
 }

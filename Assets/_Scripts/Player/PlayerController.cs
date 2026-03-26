@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     private bool sprintPressed = false;
 
     private LayerMask stairsLayer;
+    // Animator - Target Layer Weight
+    private float targetLayerWeight;
 
     #region Input Handling
     void OnEnable()
@@ -59,6 +61,7 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnInteractEvent += OnInteract;
         InputManager.Instance.OnCrouchEvent += OnCrouch;
         InputManager.Instance.OnSprintEvent += OnSprint;
+        InputManager.Instance.OnAttackEvent += OnAttack;
     }
 
     void OnDisable()
@@ -76,8 +79,54 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
-    void OnCrouch(bool pressed) => crouchPressed = pressed;
+    void OnCrouch(bool pressed)
+    {
+        if (!crouchPressed)
+        {
+            crouchPressed = true;
+            anim.SetBool("isCrouching", true);
+            // Instantly drop to crouch speed if we weren't already crouching
+            currentSpeed = crouchSpeed;
+            // Set targetLayerWeight to 1 to transition to crouch animation layer
+            targetLayerWeight = 1;
+
+            // Character Controller Settings | Crouch
+            cc.height = 1.32f;
+            cc.center = new Vector3(0.06f, -0.22f, 0.11f);
+            cc.radius = 0.34f;
+
+        }
+        else
+        {
+            crouchPressed = false;
+            anim.SetBool("isCrouching", false);
+            // Recover speed to initSpeed to allow acceleration back to max when we stop crouching
+            currentSpeed = initSpeed;
+            // Set targetLayerWeight to 0 to transition back to base animation layer
+            targetLayerWeight = 0;
+
+            // Character Controller Settings | Base
+            cc.height = 1.83f;
+            cc.center = new Vector3(0, 0, 0);
+            cc.radius = 0.22f;
+        }
+    }
     void OnSprint(bool pressed) => sprintPressed = pressed;
+
+
+    void OnAttack(bool pressed)
+    {
+        if (!pressed) return;
+
+        Gun gun = curWeapon as Gun;
+
+        if (gun != null)
+        {
+            gun.Fire();
+        }
+    }
+
+
     void OnInteract(bool pressed)
     {
         Debug.Log($"Interact Key Pressed: {pressed}. Interactable found: {interactableObject != null}");
@@ -185,8 +234,22 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Stairs detected: " + hitInfo.collider.gameObject.name);
         }
+        
+        CrouchTransition();
     }
 
+    private void CrouchTransition()
+    {
+        // Crouching layer weight transition handled here for smooth animation blending
+        // Set currentLayerWeight to Anim Layer index 1 (Crouch Layer). Set targetLayerWeight.
+        float currentLayerWeight = anim.GetLayerWeight(1);
+        // Use Mathf.MoveTowards in Update to transition the layer weight over time for a smooth animation blend.
+        float newLayerWeight = Mathf.MoveTowards
+            (currentLayerWeight,
+            targetLayerWeight,
+            Time.deltaTime * 5);
+        anim.SetLayerWeight(1, newLayerWeight);
+    }
     private void CheckInteractionUI()
     {
         // Delegate UI visibility entirely to the UIManager
@@ -257,7 +320,8 @@ public class PlayerController : MonoBehaviour
         if (cc.isGrounded)
         {
             velocity.y = -cc.skinWidth;
-            if (jumpPressed)
+            // If Crouching, prevent Jump.
+            if (jumpPressed && !crouchPressed)
             {
                 velocity.y = initialJumpVelocity;
             }
@@ -320,6 +384,28 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+
+    public bool RestoreStamina(float amount)
+    {
+        // Check if we are within 0.1 of max stamina
+        if (currentStamina >= maxStamina - 0.1f) return false;
+
+        currentStamina += amount;
+
+        if (currentStamina > maxStamina) currentStamina = maxStamina;
+
+        if (currentStamina >= minStaminaToSprint)
+        {
+            isExhausted = false;
+        }
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateStamina(currentStamina);
+        }
+
+        return true;
+    }
 
     private void OnTriggerEnter(Collider collision)
     {
