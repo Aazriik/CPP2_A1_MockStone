@@ -76,7 +76,38 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
-    void OnCrouch(bool pressed) => crouchPressed = pressed;
+    void OnCrouch(bool pressed)
+    {
+        // Set currentLayerWeight to Anim Layer index 1 (Crouch Layer). Set targetLayerWeight.
+        float currentLayerWeight = anim.GetLayerWeight(1);
+        float targetLayerWeight;
+
+        if (!crouchPressed)
+        {
+            crouchPressed = true;
+            anim.SetBool("isCrouching", true);
+            // Instantly drop to crouch speed if we weren't already crouching
+            currentSpeed = crouchSpeed;
+            // Set targetLayerWeight to 1 to transition to crouch animation layer
+            targetLayerWeight = 1;
+        }
+        else
+        {
+            crouchPressed = false;
+            anim.SetBool("isCrouching", false);
+            // Recover speed to initSpeed to allow acceleration back to max when we stop crouching
+            currentSpeed = initSpeed;
+            // Set targetLayerWeight to 0 to transition back to base animation layer
+            targetLayerWeight = 0;
+        }
+
+        // Use Mathf.MoveTowards in Update to transition the layer weight over time for a smooth animation blend.
+        float newLayerWeight = Mathf.MoveTowards
+            (currentLayerWeight,
+            targetLayerWeight,
+            Time.deltaTime * 5);
+        anim.SetLayerWeight(1, newLayerWeight);
+    }
     void OnSprint(bool pressed) => sprintPressed = pressed;
     void OnInteract(bool pressed)
     {
