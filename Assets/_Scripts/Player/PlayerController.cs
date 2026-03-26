@@ -293,7 +293,8 @@ public class PlayerController : MonoBehaviour
         if (cc.isGrounded)
         {
             velocity.y = -cc.skinWidth;
-            if (jumpPressed)
+            // If Crouching, prevent Jump.
+            if (jumpPressed && !crouchPressed)
             {
                 velocity.y = initialJumpVelocity;
             }
