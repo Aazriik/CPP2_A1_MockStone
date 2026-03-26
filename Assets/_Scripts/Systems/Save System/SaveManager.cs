@@ -62,6 +62,11 @@ public class SaveManager : Singleton<SaveManager>
                 CurrentData = new GameSaveData();
             }
         }
+        else
+        {
+            Debug.Log("No save file found. Starting fresh.");
+            CurrentData = new GameSaveData();
+        }
     }
 
     private string EncryptAES(string plainText)

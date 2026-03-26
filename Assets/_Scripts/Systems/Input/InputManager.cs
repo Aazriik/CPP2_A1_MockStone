@@ -21,8 +21,8 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
         input.Player.SetCallbacks(this);
     }
 
-    void OnEnable() => input.Enable();
-    void OnDisable() => input.Disable();
+    void OnEnable() => input?.Enable();
+    void OnDisable() => input?.Disable();
 
     public void SetPlayerControlsActive(bool active)
     {
