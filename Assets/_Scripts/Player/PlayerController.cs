@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEditor;
 using System;
+using UnityEngine.UI;
 //using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
@@ -40,7 +41,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private float currentSpeed = 0.0f;
     private bool jumpPressed = false;
-    private bool crouchPressed = false;                                                                                                                         
+    private bool crouchPressed = false;
     private bool sprintPressed = false;
 
     private LayerMask stairsLayer;
@@ -63,7 +64,22 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
-    void OnCrouch(bool pressed) => crouchPressed = pressed;
+    void OnCrouch(bool pressed)
+    {
+        //crouchPressed = pressed;
+        if (crouchPressed == false)
+        {
+            crouchPressed = true;
+            anim.SetBool("isCrouching", true);
+        }
+        else
+        {
+            crouchPressed = false;
+            anim.SetBool("isCrouching", false);
+        }
+
+        
+    }
     void OnSprint(bool pressed) => sprintPressed = pressed;
     void OnInteract(bool pressed)
     {
@@ -142,6 +158,30 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Stairs detected: " + hitInfo.collider.gameObject.name);
         }
+        #region Crouch Animation Layer
+        // Index 0 is the base layer, index 1 is the Crouching layer, and index 2 is the Aiming layer.
+        // This is Index 1, Crouching Layer.
+        float currentLayerWeight = anim.GetLayerWeight(1);
+        // The targetLayerWeight is determined by whether the crouch button is pressed. If it is, we want the layer weight to be 1 (fully active), otherwise we want it to be 0 (inactive).
+        float targetLayerWeight;
+        // If the crouchPressed is TRUE, set the targetLayerWeight to 1.0f, which means the crouching layer will fully influence the animation.
+        if (crouchPressed)
+        {
+            targetLayerWeight = 1.0f;
+        }
+        // Otherwise, we set targetLayerWeight to 0.0f, which means the crouching layer will not influence the animation at all.
+        else
+        {
+            targetLayerWeight = 0.0f;
+        }
+        // Mathf.MoveTowards will smoothly transition the current layer weight towards the target layer weight. The speed of this transition is determined by the second parameter (5 in this case), which you can adjust to make the transition faster or slower.
+        float newLayerWeight = Mathf.MoveTowards(
+            currentLayerWeight,
+            targetLayerWeight,
+            Time.deltaTime * 5); // 0 -> 1 in 1/5th of a second.
+        // Finally, we set the new layer weight for the crouching layer using anim.SetLayerWeight. This will ensure that the animation transitions smoothly between standing and crouching states based on the player's input.
+        anim.SetLayerWeight(1, newLayerWeight);
+        #endregion
     }
 
     private void CheckInteractionUI()
