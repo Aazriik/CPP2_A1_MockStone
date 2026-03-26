@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     private bool sprintPressed = false;
 
     private LayerMask stairsLayer;
+    // Animator - Target Layer Weight
+    private float targetLayerWeight;
 
     #region Input Handling
     void OnEnable()
@@ -78,10 +80,6 @@ public class PlayerController : MonoBehaviour
     void OnJump(bool pressed) => jumpPressed = pressed;
     void OnCrouch(bool pressed)
     {
-        // Set currentLayerWeight to Anim Layer index 1 (Crouch Layer). Set targetLayerWeight.
-        float currentLayerWeight = anim.GetLayerWeight(1);
-        float targetLayerWeight;
-
         if (!crouchPressed)
         {
             crouchPressed = true;
@@ -100,13 +98,6 @@ public class PlayerController : MonoBehaviour
             // Set targetLayerWeight to 0 to transition back to base animation layer
             targetLayerWeight = 0;
         }
-
-        // Use Mathf.MoveTowards in Update to transition the layer weight over time for a smooth animation blend.
-        float newLayerWeight = Mathf.MoveTowards
-            (currentLayerWeight,
-            targetLayerWeight,
-            Time.deltaTime * 5);
-        anim.SetLayerWeight(1, newLayerWeight);
     }
     void OnSprint(bool pressed) => sprintPressed = pressed;
     void OnInteract(bool pressed)
@@ -216,8 +207,22 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Stairs detected: " + hitInfo.collider.gameObject.name);
         }
+        
+        CrouchTransition();
     }
 
+    private void CrouchTransition()
+    {
+        // Crouching layer weight transition handled here for smooth animation blending
+        // Set currentLayerWeight to Anim Layer index 1 (Crouch Layer). Set targetLayerWeight.
+        float currentLayerWeight = anim.GetLayerWeight(1);
+        // Use Mathf.MoveTowards in Update to transition the layer weight over time for a smooth animation blend.
+        float newLayerWeight = Mathf.MoveTowards
+            (currentLayerWeight,
+            targetLayerWeight,
+            Time.deltaTime * 5);
+        anim.SetLayerWeight(1, newLayerWeight);
+    }
     private void CheckInteractionUI()
     {
         // Delegate UI visibility entirely to the UIManager
