@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnInteractEvent += OnInteract;
         InputManager.Instance.OnCrouchEvent += OnCrouch;
         InputManager.Instance.OnSprintEvent += OnSprint;
+        InputManager.Instance.OnAttackEvent += OnAttack;
     }
 
     void OnDisable()
@@ -111,6 +112,21 @@ public class PlayerController : MonoBehaviour
         }
     }
     void OnSprint(bool pressed) => sprintPressed = pressed;
+
+
+    void OnAttack(bool pressed)
+    {
+        if (!pressed) return;
+
+        Gun gun = curWeapon as Gun;
+
+        if (gun != null)
+        {
+            gun.Fire();
+        }
+    }
+
+
     void OnInteract(bool pressed)
     {
         Debug.Log($"Interact Key Pressed: {pressed}. Interactable found: {interactableObject != null}");
@@ -368,6 +384,28 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+
+    public bool RestoreStamina(float amount)
+    {
+        // Check if we are within 0.1 of max stamina
+        if (currentStamina >= maxStamina - 0.1f) return false;
+
+        currentStamina += amount;
+
+        if (currentStamina > maxStamina) currentStamina = maxStamina;
+
+        if (currentStamina >= minStaminaToSprint)
+        {
+            isExhausted = false;
+        }
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateStamina(currentStamina);
+        }
+
+        return true;
+    }
 
     private void OnTriggerEnter(Collider collision)
     {

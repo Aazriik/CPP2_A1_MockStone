@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8511590408215235616}
   - component: {fileID: 6044931707272330880}
   - component: {fileID: 3464854956344414871}
-  - component: {fileID: 1954954823434085614}
+  - component: {fileID: 3536787486658931148}
   m_Layer: 0
-  m_Name: Spawn Item 3
+  m_Name: CollectibleSpawn
   m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8061997719385943134}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 204.3417, y: -0, z: 207.76765}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 0acfc71c325c54b92add0b07097b6c57, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,7 +112,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1954954823434085614
+--- !u!114 &3536787486658931148
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8061997719385943134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc84dd60b533001488e0528a0407c912, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d711c73d14b53848b51b20348f4e654, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PickupItem
-  value: 1
+  m_EditorClassIdentifier: Assembly-CSharp::CollectiblePickup
+  uniqueLocationID: 
+  scoreValue: 1
