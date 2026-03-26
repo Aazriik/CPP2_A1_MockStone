@@ -18,6 +18,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.currentHealth != -1)
         {
             currentHealth = SaveManager.Instance.CurrentData.currentHealth;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = maxHealth;
+            }
         }
         else
         {
