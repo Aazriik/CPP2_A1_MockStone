@@ -1,40 +1,65 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour
 {
-    [Header("Spawner Settings")]
-    [Tooltip("The size of the Spawn Points array MUST match the Objects To Spawn array!")]
     public Transform[] spawnPoints;
     public GameObject[] objectsToSpawn;
 
-    private void Start()
+    void Start()
     {
-        // 1. Safety check to prevent the shifting array bug
-        if (spawnPoints.Length != objectsToSpawn.Length)
-        {
-            Debug.LogError($"[SpawnManager] {gameObject.name} has a mismatched number of points and objects. They must be equal!");
-            return;
-        }
+        List<int> availableSpawnIndexes = new List<int>();
+        int alreadyCollectedFromThisSpawner = 0;
 
+        // Check every spawn point against the save file to see if it was already looted
         for (int i = 0; i < spawnPoints.Length; i++)
         {
-            // 2. Create a truly unique ID using the Scene Name + Spawner Name + Point Name
-            string uniqueID = $"{gameObject.scene.name}_{gameObject.name}_{spawnPoints[i].name}";
+            // Use the GameObject name in the Unity Inspector as the unique ID
+            string pointID = spawnPoints[i].name;
 
-            // 3. Check the save file. If this specific spot was looted, skip it and move to the next item!
-            if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.collectedItemIDs.Contains(uniqueID))
+            if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.collectedItemIDs.Contains(pointID))
             {
-                continue;
+                alreadyCollectedFromThisSpawner++;
             }
+            else
+            {
+                availableSpawnIndexes.Add(i);
+            }
+        }
 
-            // 4. If not collected, spawn the specific object assigned to this specific point
-            GameObject spawnedItem = Instantiate(objectsToSpawn[i], spawnPoints[i].position, Quaternion.identity);
+        // Deduct the already collected items so we don't spawn extras
+        int amountToSpawn = objectsToSpawn.Length - alreadyCollectedFromThisSpawner;
 
-            // 5. Inject the unique ID into the pickup script so it knows exactly what to save when grabbed
-            PickupItem pickupScript = spawnedItem.GetComponent<PickupItem>();
+        if (amountToSpawn <= 0)
+        {
+            return; // Everything from this spawner has been collected
+        }
+
+        // Spawn the remaining items in random, available locations
+        for (int i = 0; i < amountToSpawn; i++)
+        {
+            if (availableSpawnIndexes.Count == 0) break;
+
+            int randomListIndex = Random.Range(0, availableSpawnIndexes.Count);
+            int actualSpawnPointIndex = availableSpawnIndexes[randomListIndex];
+
+            // Remove the location so two items don't spawn in the exact same spot
+            availableSpawnIndexes.RemoveAt(randomListIndex);
+
+            GameObject spawnedItem = Instantiate(
+                objectsToSpawn[i],
+                spawnPoints[actualSpawnPointIndex].position,
+                Quaternion.identity
+            );
+
+            PickupBase pickupScript = spawnedItem.GetComponent<PickupBase>();
             if (pickupScript != null)
             {
-                pickupScript.uniqueLocationID = uniqueID;
+                pickupScript.uniqueLocationID = spawnPoints[actualSpawnPointIndex].name;
+            }
+            else
+            {
+                Debug.LogWarning($"[SpawnManager] Could not find a PickupBase script on {spawnedItem.name}!");
             }
         }
     }
