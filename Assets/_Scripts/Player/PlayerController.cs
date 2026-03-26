@@ -88,6 +88,12 @@ public class PlayerController : MonoBehaviour
             currentSpeed = crouchSpeed;
             // Set targetLayerWeight to 1 to transition to crouch animation layer
             targetLayerWeight = 1;
+
+            // Character Controller Settings | Crouch
+            cc.height = 1.32f;
+            cc.center = new Vector3(0.06f, -0.22f, 0.11f);
+            cc.radius = 0.34f;
+
         }
         else
         {
@@ -97,6 +103,11 @@ public class PlayerController : MonoBehaviour
             currentSpeed = initSpeed;
             // Set targetLayerWeight to 0 to transition back to base animation layer
             targetLayerWeight = 0;
+
+            // Character Controller Settings | Base
+            cc.height = 1.83f;
+            cc.center = new Vector3(0, 0, 0);
+            cc.radius = 0.22f;
         }
     }
     void OnSprint(bool pressed) => sprintPressed = pressed;
