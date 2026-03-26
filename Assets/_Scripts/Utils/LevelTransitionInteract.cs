@@ -28,11 +28,13 @@ public class LevelTransitionInteract : MonoBehaviour, IInteract
     {
         if (!string.IsNullOrEmpty(sceneName))
         {
-            // Record the target scene and trigger a hard drive save before transitioning
             if (SaveManager.Instance != null)
             {
+                // 1. Record the new level name
                 SaveManager.Instance.CurrentData.currentLevelName = sceneName;
-                SaveManager.Instance.SaveGame();
+
+                // 2. Save the game, but tell it NOT to record our current coordinates
+                SaveManager.Instance.SaveGame(false);
             }
 
             SceneManager.LoadScene(sceneName);

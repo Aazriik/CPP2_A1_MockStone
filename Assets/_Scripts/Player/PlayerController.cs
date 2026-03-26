@@ -80,9 +80,14 @@ public class PlayerController : MonoBehaviour
     void OnSprint(bool pressed) => sprintPressed = pressed;
     void OnInteract(bool pressed)
     {
+        Debug.Log($"Interact Key Pressed: {pressed}. Interactable found: {interactableObject != null}");
+
         if (interactableObject != null && pressed)
         {
+            Debug.Log("Executing Interaction...");
+
             WeaponBase weapon = interactableObject as WeaponBase;
+
             if (curWeapon != null && weapon != null)
                 return;
 
