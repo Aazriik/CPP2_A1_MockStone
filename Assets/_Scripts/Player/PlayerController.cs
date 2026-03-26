@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnInteractEvent += OnInteract;
         InputManager.Instance.OnCrouchEvent += OnCrouch;
         InputManager.Instance.OnSprintEvent += OnSprint;
+        InputManager.Instance.OnAttackEvent += OnAttack;
     }
 
     void OnDisable()
@@ -100,6 +101,21 @@ public class PlayerController : MonoBehaviour
         }
     }
     void OnSprint(bool pressed) => sprintPressed = pressed;
+
+
+    void OnAttack(bool pressed)
+    {
+        if (!pressed) return;
+
+        Gun gun = curWeapon as Gun;
+
+        if (gun != null)
+        {
+            gun.Fire();
+        }
+    }
+
+
     void OnInteract(bool pressed)
     {
         Debug.Log($"Interact Key Pressed: {pressed}. Interactable found: {interactableObject != null}");
