@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
         if (InputManager.Instance != null)
         {
             InputManager.Instance.OnPauseEvent += HandlePauseInput;
+
+            InputManager.Instance.SetPlayerControlsActive(true);
         }
     }
 

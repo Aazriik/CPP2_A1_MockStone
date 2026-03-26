@@ -22,19 +22,25 @@ public class SaveManager : Singleton<SaveManager>
         LoadGame();
     }
 
-    public void SaveGame()
+    public void SaveGame(bool savePosition = true)
     {
-        // 1. Grab the player's exact coordinates right before writing to disk
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
+        if (savePosition)
         {
-            CurrentData.playerPosX = player.transform.position.x;
-            CurrentData.playerPosY = player.transform.position.y;
-            CurrentData.playerPosZ = player.transform.position.z;
-            CurrentData.hasSavedPosition = true;
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                CurrentData.playerPosX = player.transform.position.x;
+                CurrentData.playerPosY = player.transform.position.y;
+                CurrentData.playerPosZ = player.transform.position.z;
+                CurrentData.hasSavedPosition = true;
+            }
+        }
+        else
+        {
+            // Wipe the position flag so the player loads at the new scene's default spawn
+            CurrentData.hasSavedPosition = false;
         }
 
-        // 2. Encrypt and Save
         string json = JsonUtility.ToJson(CurrentData);
         string encryptedData = EncryptAES(json);
         File.WriteAllText(saveFilePath, encryptedData);
