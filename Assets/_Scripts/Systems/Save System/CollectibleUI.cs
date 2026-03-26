@@ -5,8 +5,8 @@ public class CollectibleUI : MonoBehaviour
 {
     public TMP_Text collectedTMP;
 
-    private void OnEnable() => PickupItem.OnCollectiblePickedUp += UpdateUI;
-    private void OnDisable() => PickupItem.OnCollectiblePickedUp -= UpdateUI;
+    private void OnEnable() => CollectiblePickup.OnCollectiblePickedUp += UpdateUI;
+    private void OnDisable() => CollectiblePickup.OnCollectiblePickedUp -= UpdateUI;
 
     private void Start()
     {

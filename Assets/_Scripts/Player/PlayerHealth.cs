@@ -53,17 +53,23 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    public void Heal(int healAmount)
+    public bool Heal(int healAmount)
     {
-        if (isDead) return;
+        if (isDead || currentHealth >= maxHealth) return false;
 
-        // Mathf.Min prevents overhealing past maxHealth
-        currentHealth = Mathf.Min(maxHealth, currentHealth + healAmount);
+        currentHealth += healAmount;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
 
         if (HUDController.Instance != null)
         {
             HUDController.Instance.UpdateHealth(currentHealth);
         }
+
+        return true;
     }
 
     private void Die()

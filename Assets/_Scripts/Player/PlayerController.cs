@@ -357,6 +357,28 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    public bool RestoreStamina(float amount)
+    {
+        // Check if we are within 0.1 of max stamina
+        if (currentStamina >= maxStamina - 0.1f) return false;
+
+        currentStamina += amount;
+
+        if (currentStamina > maxStamina) currentStamina = maxStamina;
+
+        if (currentStamina >= minStaminaToSprint)
+        {
+            isExhausted = false;
+        }
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateStamina(currentStamina);
+        }
+
+        return true;
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
         IInteract interactable = collision.GetComponent<IInteract>();
