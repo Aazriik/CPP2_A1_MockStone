@@ -1,10 +1,6 @@
-// Mockstone Player Controller
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEditor;
 using System;
-using UnityEngine.UI;
-//using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,14 +11,12 @@ public class PlayerController : MonoBehaviour
     WeaponBase curWeapon = null;
     IInteract interactableObject = null;
 
-    public GameObject interactImage;
-
-    [Header("Jump Settiings")]
+    [Header("Jump Settings")]
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float timeToJumpApex = 0.4f;
 
     private float gravity;
-    private float initalJumpVelocity;
+    private float initialJumpVelocity;
 
     [Header("Movement Settings")]
     [SerializeField] private float initSpeed = 0.5f;
@@ -31,6 +25,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchSpeed = 2.5f;
     [SerializeField] private bool enableSprint = true;
     [SerializeField] private float sprintMultiplier = 1.5f;
+
+    [Header("Stamina Settings")]
+    [SerializeField] private float maxStamina = 100f;
+    [SerializeField] private float staminaDrainRate = 20f;
+    [SerializeField] private float staminaRegenRate = 15f;
+    [SerializeField] private float staminaRegenDelay = 1.0f;
+    [SerializeField] private float minStaminaToSprint = 10f;
+
+    private float currentStamina;
+    private float staminaRegenTimer = 0f;
+    private bool isExhausted = false;
 
     [Header("Weapon Settings")]
     [SerializeField] private Transform weaponAttachPoint;
@@ -56,30 +61,22 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnSprintEvent += OnSprint;
     }
 
-    //void OnDisable()
-    //{
-    //    InputManager.Instance.OnMoveEvent -= OnMove;
-    //    InputManager.Instance.OnJumpEvent -= OnJump;
-    //}
+    void OnDisable()
+    {
+        // Unsubscribe to prevent memory leaks if the player is destroyed
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.OnMoveEvent -= OnMove;
+            InputManager.Instance.OnJumpEvent -= OnJump;
+            InputManager.Instance.OnInteractEvent -= OnInteract;
+            InputManager.Instance.OnCrouchEvent -= OnCrouch;
+            InputManager.Instance.OnSprintEvent -= OnSprint;
+        }
+    }
 
     void OnMove(Vector2 input) => moveInput = input;
     void OnJump(bool pressed) => jumpPressed = pressed;
-    void OnCrouch(bool pressed)
-    {
-        //crouchPressed = pressed;
-        if (crouchPressed == false)
-        {
-            crouchPressed = true;
-            anim.SetBool("isCrouching", true);
-        }
-        else
-        {
-            crouchPressed = false;
-            anim.SetBool("isCrouching", false);
-        }
-
-        
-    }
+    void OnCrouch(bool pressed) => crouchPressed = pressed;
     void OnSprint(bool pressed) => sprintPressed = pressed;
     void OnInteract(bool pressed)
     {
@@ -91,7 +88,6 @@ public class PlayerController : MonoBehaviour
 
             if (weapon != null && curWeapon == null)
                 curWeapon = weapon;
-
 
             interactableObject.Interact(this);
             return;
@@ -105,20 +101,48 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         cc = GetComponent<CharacterController>();
         col = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
+
+        if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.hasSavedPosition)
+        {
+            // Disable the controller so it doesn't fight the teleportation
+            cc.enabled = false;
+
+            transform.position = new Vector3(
+                SaveManager.Instance.CurrentData.playerPosX,
+                SaveManager.Instance.CurrentData.playerPosY,
+                SaveManager.Instance.CurrentData.playerPosZ
+            );
+
+            // Re-enable the controller now that we are in the correct spot
+            cc.enabled = true;
+        }
 
         CalculateJumpVariables();
 
         stairsLayer = LayerMask.GetMask("Stairs");
         mainCamera = Camera.main;
+
+        // Initialize Stamina from Save Data, or default to max for a new game
+        if (SaveManager.Instance != null && SaveManager.Instance.CurrentData.currentStamina != -1f)
+        {
+            currentStamina = SaveManager.Instance.CurrentData.currentStamina;
+        }
+        else
+        {
+            currentStamina = maxStamina;
+        }
+
+        // Lock and hide the cursor for standard gameplay
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    //this triggers when a value is changed in the inspector
     void OnValidate()
     {
         CalculateJumpVariables();
@@ -142,7 +166,7 @@ public class PlayerController : MonoBehaviour
         }
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-        initalJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        initialJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
 
     private void Update()
@@ -152,47 +176,22 @@ public class PlayerController : MonoBehaviour
         Ray newRay = new Ray(transform.position, transform.forward);
         RaycastHit hitInfo;
 
-        //Debug.DrawRay(newRay.origin, newRay.direction * 10.0f, Color.red, 0.1f);
-        bool hitSomething = Physics.Raycast(newRay, out hitInfo, 10.0f, stairsLayer);
-        if (hitSomething)
+        if (Physics.Raycast(newRay, out hitInfo, 10.0f, stairsLayer))
         {
             Debug.Log("Stairs detected: " + hitInfo.collider.gameObject.name);
         }
-        #region Crouch Animation Layer
-        // Index 0 is the base layer, index 1 is the Crouching layer, and index 2 is the Aiming layer.
-        // This is Index 1, Crouching Layer.
-        float currentLayerWeight = anim.GetLayerWeight(1);
-        // The targetLayerWeight is determined by whether the crouch button is pressed. If it is, we want the layer weight to be 1 (fully active), otherwise we want it to be 0 (inactive).
-        float targetLayerWeight;
-        // If the crouchPressed is TRUE, set the targetLayerWeight to 1.0f, which means the crouching layer will fully influence the animation.
-        if (crouchPressed)
-        {
-            targetLayerWeight = 1.0f;
-        }
-        // Otherwise, we set targetLayerWeight to 0.0f, which means the crouching layer will not influence the animation at all.
-        else
-        {
-            targetLayerWeight = 0.0f;
-        }
-        // Mathf.MoveTowards will smoothly transition the current layer weight towards the target layer weight. The speed of this transition is determined by the second parameter (5 in this case), which you can adjust to make the transition faster or slower.
-        float newLayerWeight = Mathf.MoveTowards(
-            currentLayerWeight,
-            targetLayerWeight,
-            Time.deltaTime * 5); // 0 -> 1 in 1/5th of a second.
-        // Finally, we set the new layer weight for the crouching layer using anim.SetLayerWeight. This will ensure that the animation transitions smoothly between standing and crouching states based on the player's input.
-        anim.SetLayerWeight(1, newLayerWeight);
-        #endregion
     }
 
     private void CheckInteractionUI()
     {
-        if (interactableObject != null && interactImage.activeSelf == false)
-            interactImage.SetActive(true);
-        else if (interactableObject == null && interactImage.activeSelf == true)
-            interactImage.SetActive(false);
+        // Delegate UI visibility entirely to the UIManager
+        if (UIManager.Instance != null)
+        {
+            bool isNearInteractable = interactableObject != null;
+            UIManager.Instance.SetInteractionPromptVisible(isNearInteractable);
+        }
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         Vector3 projectedMoveDirection = ProjectedMoveDirection();
@@ -221,19 +220,22 @@ public class PlayerController : MonoBehaviour
     void UpdateCharacterVelocity(Vector3 projectedMoveDirection)
     {
         float targetSpeed = maxSpeed;
+        bool isActuallySprinting = false;
 
         if (crouchPressed)
         {
             targetSpeed = crouchSpeed;
         }
-        else if (enableSprint && sprintPressed)
+        // ONLY sprint if we have the button pressed, are moving, and aren't exhausted
+        else if (enableSprint && sprintPressed && !isExhausted && moveInput != Vector2.zero)
         {
             targetSpeed = maxSpeed * sprintMultiplier;
+            isActuallySprinting = true; // Flag for our stamina calculation
         }
 
         if (moveInput == Vector2.zero)
         {
-             currentSpeed = 0;
+            currentSpeed = 0;
         }
         else if (currentSpeed == 0.0f)
         {
@@ -244,7 +246,6 @@ public class PlayerController : MonoBehaviour
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
         }
 
-
         velocity.x = projectedMoveDirection.x * currentSpeed;
         velocity.z = projectedMoveDirection.z * currentSpeed;
 
@@ -253,14 +254,58 @@ public class PlayerController : MonoBehaviour
             velocity.y = -cc.skinWidth;
             if (jumpPressed)
             {
-                velocity.y = initalJumpVelocity;
+                velocity.y = initialJumpVelocity;
             }
         }
         else
         {
             velocity.y += gravity * Time.fixedDeltaTime;
         }
+
+        HandleStamina(isActuallySprinting);
     }
+
+    private void HandleStamina(bool isSprinting)
+    {
+        if (isSprinting)
+        {
+            currentStamina -= staminaDrainRate * Time.fixedDeltaTime;
+            staminaRegenTimer = 0f;
+
+            if (currentStamina <= 0f)
+            {
+                currentStamina = 0f;
+                isExhausted = true; // Force the player to stop sprinting
+            }
+        }
+        else if (currentStamina < maxStamina)
+        {
+            staminaRegenTimer += Time.fixedDeltaTime;
+
+            if (staminaRegenTimer >= staminaRegenDelay)
+            {
+                currentStamina += staminaRegenRate * Time.fixedDeltaTime;
+
+                // Once we regen past the minimum threshold, allow sprinting again
+                if (currentStamina >= minStaminaToSprint)
+                {
+                    isExhausted = false;
+                }
+
+                if (currentStamina > maxStamina)
+                {
+                    currentStamina = maxStamina;
+                }
+            }
+        }
+
+        // Send the updated stamina value to the HUD
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateStamina(currentStamina);
+        }
+    }
+
     private void UpdateCharacterRotation(Vector3 projectedMoveDirection)
     {
         if (moveInput != Vector2.zero)
@@ -283,7 +328,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         IInteract interactable = other.GetComponent<IInteract>();
-        if (interactable != null && interactableObject.Equals(interactable))
+
+        // Null check added here to prevent errors if interactableObject was already cleared
+        if (interactable != null && interactableObject != null && interactableObject.Equals(interactable))
         {
             interactableObject = null;
         }
@@ -291,6 +338,6 @@ public class PlayerController : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-
+        // Reserved for future physics push interactions
     }
 }

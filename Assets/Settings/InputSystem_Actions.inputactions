@@ -48,7 +48,7 @@
                     "id": "27c5f898-bc57-4ee1-8800-db469aca5fe3",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -88,12 +88,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aiming",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "cee47243-2909-40b5-82c2-c401b7c3f5cb",
+                    "id": "3cc3e383-2205-4fb9-a52b-1be0ac39e7ae",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -266,7 +266,7 @@
                 {
                     "name": "",
                     "id": "143bb1cd-cc10-4eca-a2f0-a3664166fe91",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -292,6 +292,39 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee3d0cd2-254e-47a7-a8cb-bc94d9658c54",
+                    "path": "<Joystick>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8255d333-5683-4943-a58a-ccb207ff1dce",
+                    "path": "<XRController>/{PrimaryAction}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3c1c7f0-bd20-4ee7-a0f1-899b24bca6d7",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -332,7 +365,7 @@
                 {
                     "name": "",
                     "id": "8cbb2f4b-a784-49cc-8d5e-c010b8c7f4e6",
-                    "path": "<Gamepad>/leftStickPress",
+                    "path": "<DualShockGamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -354,7 +387,7 @@
                 {
                     "name": "",
                     "id": "daba33a1-ad0c-4742-a909-43ad1cdfbeb6",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<DualShockGamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -398,7 +431,7 @@
                 {
                     "name": "",
                     "id": "b3f66d0b-7751-423f-908b-a11c5bd95930",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<DualShockGamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -409,7 +442,7 @@
                 {
                     "name": "",
                     "id": "4f4649ac-64a8-4a73-af11-b3faef356a4d",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<DualShockGamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -430,34 +463,23 @@
                 },
                 {
                     "name": "",
-                    "id": "6b11d635-7894-4360-8523-96b1a8ddc30b",
-                    "path": "<Keyboard>/leftCtrl",
+                    "id": "6ae07fed-2337-431e-affc-fa1b3963c52e",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Crouch",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "c5abd527-253b-4835-a85f-b8132b02af57",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Aiming",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2f356988-3c57-4fbd-8046-1327dc701f17",
-                    "path": "<Gamepad>/leftShoulder",
+                    "id": "dc07f9a0-6d09-4ef7-994b-431c6d62c24d",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Aiming",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
