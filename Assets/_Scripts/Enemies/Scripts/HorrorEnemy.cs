@@ -34,6 +34,14 @@ public class EnemyAI : MonoBehaviour
 
     private Vector3 targetPosition;
 
+    // Patrol settings
+    public Transform[] patrolPoints;
+    public float patrolStopDistance = 1.2f;
+    int currentPatrolIndex = 0;
+    public float turnSpeed = 8f;
+
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -43,10 +51,34 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        DetectPlayer();
+
         switch (currentState)
         {
             case State.Idle:
-               
+
+                if (patrolPoints == null || patrolPoints.Length == 0) return;
+
+
+                Transform targetPoint = patrolPoints[currentPatrolIndex];
+
+                Vector3 targetPos = targetPoint.position;
+                targetPos.y = transform.position.y;
+
+                float dist = Vector3.Distance(transform.position, targetPos);
+
+                FaceTarget(targetPos);
+
+                if (dist > patrolStopDistance)
+                {
+                    MoveTowards(targetPos, patrolSpeed);
+                    
+                }
+                else
+                {
+                    
+                    currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+                }
                 break;
 
             case State.Investigating:
@@ -57,7 +89,7 @@ public class EnemyAI : MonoBehaviour
                     currentState = State.Searching;
                     PickRandomSearchPoint();
                 }
-                DetectPlayer();
+                
                 break;
 
             case State.Searching:
@@ -67,7 +99,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     PickRandomSearchPoint();
                 }
-                DetectPlayer();
+                
                 break;
 
             case State.Chasing:
@@ -114,9 +146,23 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    
+    void FaceTarget(Vector3 targetPos)
+    {
+        Vector3 dir = targetPos - transform.position;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude < 0.001f) return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir.normalized);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            turnSpeed * Time.deltaTime
+        );
+    }
+
     // PHASE 2: Pick random search point
-    
+
     void PickRandomSearchPoint()
     {
         Vector3 randomOffset = new Vector3(
@@ -132,7 +178,7 @@ public class EnemyAI : MonoBehaviour
     
     void DetectPlayer()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
+        Vector3 direction = (player.position + Vector3.up * 1f - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, player.position);
 
         if (distance < visionRange)
