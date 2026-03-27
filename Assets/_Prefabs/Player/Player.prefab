@@ -94,6 +94,7 @@ MonoBehaviour:
   staminaRegenDelay: 1
   minStaminaToSprint: 10
   weaponAttachPoint: {fileID: 7526300638509393261}
+  footstepLoopSource: {fileID: -8264577006643717182}
 --- !u!143 &7946721320975016971
 CharacterController:
   m_ObjectHideFlags: 0
@@ -147,7 +148,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

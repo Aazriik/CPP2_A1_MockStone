@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour
     public Transform WeaponAttachPoint => weaponAttachPoint;
     public Collider Collider => col;
 
+    [Header("Footstep Loop")]
+    [SerializeField] private AudioSource footstepLoopSource;
+
     private Vector2 moveInput = Vector2.zero;
     private Vector3 velocity = Vector3.zero;
     private float currentSpeed = 0.0f;
@@ -326,8 +329,9 @@ public class PlayerController : MonoBehaviour
 
         cc.Move(velocity * Time.fixedDeltaTime);
         anim.SetFloat("speed", currentSpeed / maxSpeed);
-        // Update the grounded status in the animator
         anim.SetBool("isGrounded", cc.isGrounded);
+
+        HandleFootstepLoop();
     }
 
     #region Movement Helpers
@@ -490,5 +494,39 @@ public class PlayerController : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         // Reserved for future physics push interactions
+    }
+
+    private void HandleFootstepLoop()
+    {
+        if (footstepLoopSource == null)
+            return;
+
+        bool isMoving = moveInput.magnitude > 0.1f;
+        bool isGrounded = cc.isGrounded;
+
+        float targetVolume = (isMoving && isGrounded) ? 1f : 0f;
+
+        // Start if needed
+        if (targetVolume > 0f && !footstepLoopSource.isPlaying)
+        {
+            footstepLoopSource.Play();
+        }
+
+        // Smooth fade
+        footstepLoopSource.volume = Mathf.MoveTowards(
+            footstepLoopSource.volume,
+            targetVolume,
+            Time.fixedDeltaTime * 5f
+        );
+
+        // Adjust pitch with speed
+        float speedPercent = currentSpeed / maxSpeed;
+        footstepLoopSource.pitch = 0.9f + speedPercent * 0.6f;
+
+        // Stop when fully faded out
+        if (footstepLoopSource.volume <= 0.01f && footstepLoopSource.isPlaying)
+        {
+            footstepLoopSource.Stop();
+        }
     }
 }
