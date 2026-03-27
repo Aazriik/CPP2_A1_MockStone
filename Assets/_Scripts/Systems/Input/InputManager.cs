@@ -13,7 +13,6 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
     public event System.Action<bool> OnSprintEvent;
     public event System.Action<bool> OnPauseEvent;
     public event System.Action<bool> OnAttackEvent;
-    public event System.Action<bool> OnAimEvent;
 
     protected override void Awake()
     {
@@ -85,11 +84,5 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
     public void OnAttack(InputAction.CallbackContext context)
     {
         OnAttackEvent?.Invoke(context.ReadValueAsButton());
-    }
-
-    public void OnAim(InputAction.CallbackContext context)
-    {
-        if (context.performed) OnAimEvent?.Invoke(true);
-        else if (context.canceled) OnAimEvent?.Invoke(false);
     }
 }
