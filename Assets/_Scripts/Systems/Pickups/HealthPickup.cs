@@ -5,6 +5,8 @@ public class HealthPickup : PickupBase
     [Tooltip("Amount of Health this restores. Use 100 to fully heal.")]
     public int healAmount = 100;
 
+    [SerializeField] private AudioClip pickupSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -17,6 +19,11 @@ public class HealthPickup : PickupBase
 
                 if (wasUsed)
                 {
+                    if (pickupSound != null)
+                    {
+                        AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+                    }
+
                     MarkAsCollectedAndDestroy();
                 }
             }

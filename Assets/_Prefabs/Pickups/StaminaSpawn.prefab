@@ -126,3 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StaminaPickup
   uniqueLocationID: 
   staminaAmount: 100
+  pickupSound: {fileID: 8300000, guid: 6dcac38ff77831d4b9b16765327df50b, type: 3}
