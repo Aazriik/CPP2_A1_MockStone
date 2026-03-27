@@ -94,6 +94,7 @@ MonoBehaviour:
   staminaRegenDelay: 1
   minStaminaToSprint: 10
   weaponAttachPoint: {fileID: 7526300638509393261}
+  footstepLoopSource: {fileID: -8264577006643717182}
 --- !u!143 &7946721320975016971
 CharacterController:
   m_ObjectHideFlags: 0
@@ -143,11 +144,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -4311017505695451486, guid: 31cd91ab3d2bfe2489377d1233d3d61a, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: c9e399d03a7b2a84fadf2a7fd95b777a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
