@@ -14,6 +14,13 @@ public class GroundEnemyController : MonoBehaviour
     int currentHP;
     bool isDead;
 
+    [Header("Attack")]
+    public int attackDamage = 10;
+    public float attackRange = 2f;
+    public LayerMask playerLayer;
+
+    public float attackDelay = 2.0f;
+
     void Awake()
     {
         currentHP = maxHP;
@@ -37,7 +44,9 @@ public class GroundEnemyController : MonoBehaviour
     public void TriggerAttack()
     {
         if (!anim || isDead) return;
+
         anim.SetTrigger("Attack");
+        Invoke(nameof(DealDamage), attackDelay);
     }
 
     public void TriggerHit()
@@ -77,6 +86,23 @@ public class GroundEnemyController : MonoBehaviour
 
         Collider col = GetComponent<Collider>();
         if (col) col.enabled = false;
+    }
+
+    public void DealDamage()
+    {
+        if (isDead || player == null) return;
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        if (distance <= attackRange)
+        {
+            IDamageable damageable = player.GetComponent<IDamageable>();
+
+            if (damageable != null)
+            {
+                damageable.TakeDamage(attackDamage);
+            }
+        }
     }
 }
 
