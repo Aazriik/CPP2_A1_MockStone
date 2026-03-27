@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed = false;
     private bool crouchPressed = false;
     private bool sprintPressed = false;
+    private bool isAiming = false;
 
     private LayerMask stairsLayer;
     // Animator - Target Layer Weight
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
         InputManager.Instance.OnCrouchEvent += OnCrouch;
         InputManager.Instance.OnSprintEvent += OnSprint;
         InputManager.Instance.OnAttackEvent += OnAttack;
+        InputManager.Instance.OnAimEvent += OnAim;
     }
 
     void OnDisable()
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviour
             InputManager.Instance.OnInteractEvent -= OnInteract;
             InputManager.Instance.OnCrouchEvent -= OnCrouch;
             InputManager.Instance.OnSprintEvent -= OnSprint;
+            InputManager.Instance.OnAttackEvent -= OnAim;
         }
     }
 
@@ -84,7 +87,6 @@ public class PlayerController : MonoBehaviour
         if (!crouchPressed)
         {
             crouchPressed = true;
-            anim.SetBool("isCrouching", true);
             // Instantly drop to crouch speed if we weren't already crouching
             currentSpeed = crouchSpeed;
             // Set targetLayerWeight to 1 to transition to crouch animation layer
@@ -99,7 +101,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             crouchPressed = false;
-            anim.SetBool("isCrouching", false);
             // Recover speed to initSpeed to allow acceleration back to max when we stop crouching
             currentSpeed = initSpeed;
             // Set targetLayerWeight to 0 to transition back to base animation layer
@@ -123,6 +124,24 @@ public class PlayerController : MonoBehaviour
         if (gun != null)
         {
             gun.Fire();
+        }
+    }
+
+    void OnAim(bool pressed)
+    {
+        if (!isAiming)
+        {
+            isAiming = true;
+            // Drop to Crouch Speed when aiming.
+            currentSpeed = crouchSpeed;
+            // Set targetLayerWeight to 1 to transition to aiming animation layer
+            targetLayerWeight = 1;
+        }
+        else
+        {
+            isAiming = false;
+            // Set targetLayerWeight to 0 to transition back to base animation layer
+            targetLayerWeight = 0;
         }
     }
 
@@ -234,8 +253,10 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Stairs detected: " + hitInfo.collider.gameObject.name);
         }
-        
+
+        //CheckInputForAnimLayer();
         CrouchTransition();
+        PistolAimingTransition();
     }
 
     private void CrouchTransition()
@@ -250,6 +271,43 @@ public class PlayerController : MonoBehaviour
             Time.deltaTime * 5);
         anim.SetLayerWeight(1, newLayerWeight);
     }
+
+    private void PistolAimingTransition()
+    {
+        // Aiming layer weight transition handled here for smooth animation blending
+        // Set currentLayerWeight to Anim Layer index 2 (Aim Layer). Set targetLayerWeight based on whether we are aiming or not.
+        float currentLayerWeight = anim.GetLayerWeight(2);
+        float newLayerWeight = Mathf.MoveTowards
+            (currentLayerWeight,
+            targetLayerWeight,
+            Time.deltaTime * 5);
+        anim.SetLayerWeight(2, newLayerWeight);
+    }
+
+    private void CheckInputForAnimLayer()
+    {
+        // Check if Crouch is pressed
+        if (crouchPressed)
+        {
+            CrouchTransition();
+            return;
+        }
+        // Check if both Crouch and Aim are pressed
+        else if (crouchPressed && isAiming)
+        {
+            CrouchTransition();
+            PistolAimingTransition();
+            return;
+        }
+        // Check if Aim is pressed
+        else if (isAiming)
+        {
+            PistolAimingTransition();
+            return;
+        }
+    }
+
+
     private void CheckInteractionUI()
     {
         // Delegate UI visibility entirely to the UIManager
@@ -268,6 +326,8 @@ public class PlayerController : MonoBehaviour
 
         cc.Move(velocity * Time.fixedDeltaTime);
         anim.SetFloat("speed", currentSpeed / maxSpeed);
+        // Update the grounded status in the animator
+        anim.SetBool("isGrounded", cc.isGrounded);
     }
 
     #region Movement Helpers
