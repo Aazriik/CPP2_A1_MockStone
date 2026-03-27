@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572644080779734098}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.50000006, w: 0.49999994}
-  m_LocalPosition: {x: -0.010031491, y: 0.39050207, z: 0.02568808}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.53255343, y: 0.021395415, z: 0.818351, w: 0.21501373}
+  m_LocalPosition: {x: -0.007, y: 0.472, z: -0.041}
+  m_LocalScale: {x: 0.6474197, y: 0.6474197, z: 0.6474197}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3063331944478906616}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.186, y: 63.882, z: 157.545}
 --- !u!1 &2911033436771779718
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +94,7 @@ MonoBehaviour:
   staminaRegenDelay: 1
   minStaminaToSprint: 10
   weaponAttachPoint: {fileID: 7526300638509393261}
+  footstepLoopSource: {fileID: -8264577006643717182}
 --- !u!143 &7946721320975016971
 CharacterController:
   m_ObjectHideFlags: 0
@@ -143,11 +144,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -4311017505695451486, guid: 31cd91ab3d2bfe2489377d1233d3d61a, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: c9e399d03a7b2a84fadf2a7fd95b777a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

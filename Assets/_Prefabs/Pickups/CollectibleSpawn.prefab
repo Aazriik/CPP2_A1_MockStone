@@ -126,3 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectiblePickup
   uniqueLocationID: 
   scoreValue: 1
+  pickupSound: {fileID: 8300000, guid: f51a51af6bd08c341af047d9d54391b0, type: 3}

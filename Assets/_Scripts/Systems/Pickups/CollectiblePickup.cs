@@ -7,6 +7,8 @@ public class CollectiblePickup : PickupBase
     public static event Action<int, int> OnCollectiblePickedUp;
     private const int MaxCollectibles = 5;
 
+    [SerializeField] private AudioClip pickupSound;
+
     protected override void Start()
     {
         base.Start();
@@ -29,6 +31,11 @@ public class CollectiblePickup : PickupBase
             }
 
             OnCollectiblePickedUp?.Invoke(currentTotal, MaxCollectibles);
+
+            if (pickupSound != null)
+            {
+                AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+            }
 
             MarkAsCollectedAndDestroy();
         }

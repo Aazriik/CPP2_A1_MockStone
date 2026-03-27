@@ -5,6 +5,8 @@ public class StaminaPickup : PickupBase
     [Tooltip("Amount of Stamina this restores. Use 100 to fully restore.")]
     public float staminaAmount = 100f;
 
+    [SerializeField] private AudioClip pickupSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -16,6 +18,11 @@ public class StaminaPickup : PickupBase
 
                 if (wasUsed)
                 {
+                    if (pickupSound != null)
+                    {
+                        AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+                    }
+
                     MarkAsCollectedAndDestroy();
                 }
             }
