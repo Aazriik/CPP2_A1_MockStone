@@ -161,6 +161,7 @@ MonoBehaviour:
   dropForce: 2
   bullet: {fileID: 3450677110014054276, guid: 91c8a7ddd50168e48ae6ce8f1db28750, type: 3}
   muzzlePoint: {fileID: 7504461521487266454}
+  gunshotSound: {fileID: 8300000, guid: c230eab3129af9c4da3c251eecb6113d, type: 3}
 --- !u!114 &4139314246755235019
 MonoBehaviour:
   m_ObjectHideFlags: 0

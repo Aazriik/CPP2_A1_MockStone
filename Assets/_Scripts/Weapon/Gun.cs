@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Gun : WeaponBase
 {
-
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform muzzlePoint;
 
+    [SerializeField] private AudioClip gunshotSound;
 
     public void Fire()
     {
@@ -16,6 +16,11 @@ public class Gun : WeaponBase
         if (projectileScript != null)
         {
             projectileScript.SetDirection(muzzlePoint.forward);
+        }
+
+        if (gunshotSound != null)
+        {
+            AudioSource.PlayClipAtPoint(gunshotSound, muzzlePoint.position);
         }
     }
 
